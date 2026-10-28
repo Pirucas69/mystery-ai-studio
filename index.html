@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090b12">
+  <meta name="description" content="Mystery AI Studio - Create captivating mystery videos with AI.">
+  <title>Mystery AI Studio</title>
+
+  <style>
+    :root {
+      --bg: #090b12;
+      --panel: #121622;
+      --panel2: #191e2d;
+      --text: #f4f5fb;
+      --muted: #929bb0;
+      --purple: #9270ff;
+      --cyan: #48e0d0;
+      --border: #282e40;
+      --danger: #ff647c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Inter, system-ui, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 245px;
+      padding: 26px 16px;
+      border-right: 1px solid var(--border);
+      background: #0d1019;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0 8px 35px;
+    }
+
+    .brand-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      background: linear-gradient(135deg, var(--purple), #5141a9);
+    }
+
+    .brand h1 {
+      font-size: 15px;
+      letter-spacing: .3px;
+    }
+
+    .brand p {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .nav-label {
+      color: #707b91;
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      margin: 24px 10px 10px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      padding: 13px 12px;
+      border-radius: 10px;
+      margin: 3px 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      background: #211b3b;
+      color: white;
+    }
+
+    .sidebar-bottom {
+      margin-top: 45px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    .sidebar-bottom strong {
+      color: white;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    main {
+      flex: 1;
+      min-width: 0;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 32px;
+    }
+
+    .topbar h2 {
+      font-size: 24px;
+    }
+
+    .topbar p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 7px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #162a2a;
+      color: var(--cyan);
+      border: 1px solid #24514b;
+      border-radius: 20px;
+      padding: 8px 12px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--cyan);
+    }
+
+    .hero {
+      padding: 32px;
+      border-radius: 20px;
+      border: 1px solid #383051;
+      background:
+        radial-gradient(ellipse at 85% 10%, #49347a55, transparent 45%),
+        linear-gradient(125deg, #19152a, #121622 65%);
+      margin-bottom: 25px;
+    }
+
+    .eyebrow {
+      color: var(--cyan);
+      font-size: 11px;
+      letter-spacing: 1.6px;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .hero h3 {
+      font-size: clamp(25px, 4vw, 39px);
+      line-height: 1.2;
+      max-width: 620px;
+      margin-bottom: 13px;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 570px;
+      line-height: 1.7;
+      font-size: 13px;
+    }
+
+    .button {
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: white;
+      background: var(--panel2);
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .button.primary {
+      background: linear-gradient(120deg, #9270ff, #7351df);
+      border: 0;
+    }
+
+    .button:hover {
+      filter: brightness(1.15);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin-bottom: 28px;
+    }
+
+    .stat {
+      padding: 20px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--panel);
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat-value {
+      font-size: 27px;
+      font-weight: 750;
+      margin-top: 12px;
+    }
+
+    .stat-note {
+      font-size: 11px;
+      color: var(--cyan);
+      margin-top: 6px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin: 30px 0 16px;
+    }
+
+    .section-head h3 {
+      font-size: 17px;
+    }
+
+    .section-head span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      min-width: 0;
+    }
+
+    .card h4 {
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .card .sub {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 8px;
+      color: #c7ccda;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: #0c0f18;
+      color: white;
+      border-radius: 9px;
+      padding: 12px;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--purple);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .full {
+      width: 100%;
+    }
+
+    .result {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #0c0f18;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 12px;
+      line-height: 1.8;
+      color: #d6d9e6;
+      min-height: 100px;
+      margin-top: 15px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .video-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .video-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 15px;
+      min-width: 0;
+    }
+
+    .video-thumb {
+      height: 115px;
+      border-radius: 9px;
+      background: linear-gradient(145deg, #342755, #121c2b);
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+      margin-bottom: 13px;
+    }
+
+    .video-card h4 {
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .video-card p {
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .video-card .button {
+      width: 100%;
+      padding: 9px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      background: #24213c;
+      color: #b9a7ff;
+      margin-bottom: 12px;
+    }
+
+    .notice {
+      border: 1px solid #51432b;
+      background: #282116;
+      color: #e7d4a4;
+      border-radius: 10px;
+      padding: 13px;
+      line-height: 1.6;
+      font-size: 11px;
+      margin-top: 14px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 30px 10px;
+      color: var(--muted);
+      font-size: 12px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      grid-column: 1 / -1;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #24213c;
+      border: 1px solid #514078;
+      color: white;
+      padding: 13px 18px;
+      border-radius: 12px;
+      font-size: 12px;
+      box-shadow: 0 8px 30px #0008;
+      z-index: 100;
+      max-width: 90%;
+    }
+
+    footer {
+      margin-top: 35px;
+      padding: 20px 0;
+      color: #687187;
+      font-size: 11px;
+      border-top: 1px solid var(--border);
+      line-height: 1.8;
+    }
+
+    @media (max-width: 950px) {
+      aside {
+        width: 190px;
+      }
+
+      main {
+        padding: 20px;
+      }
+
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .app {
+        display: block;
+        padding-bottom: 65px;
+      }
+
+      aside {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        width: 100%;
+        height: 62px;
+        padding: 5px;
+        border-right: 0;
+        border-top: 1px solid var(--border);
+        background: #0d1019;
+      }
+
+      .brand, .nav-label, .sidebar-bottom {
+        display: none;
+      }
+
+      aside nav {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .nav-btn {
+        width: auto;
+        flex: 1;
+        justify-content: center;
+        flex-direction: column;
+        gap: 3px;
+        padding: 6px 2px;
+        margin: 0;
+        font-size: 9px;
+      }
+
+      main {
+        padding: 18px 14px;
+      }
+
+      .topbar {
+        margin-bottom: 22px;
+      }
+
+      .topbar h2 {
+        font-size: 20px;
+      }
+
+      .topbar p {
+        font-size: 11px;
+      }
+
+      .badge {
+        font-size: 9px;
+        padding: 7px;
+      }
+
+      .hero {
+        padding: 22px 18px;
+      }
+
+      .stats {
+        gap: 8px;
+      }
+
+      .stat {
+        padding: 12px 10px;
+      }
+
+      .stat-label {
+        font-size: 10px;
+      }
+
+      .stat-value {
+        font-size: 21px;
+      }
+
+      .stat-note {
+        font-size: 9px;
+      }
+
+      .video-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .card {
+        padding: 17px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .video-list {
+        grid-template-columns: 1fr;
+      }
+
+      .badge {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside>
+    <div class="brand">
+      <div class="brand-icon">🌒</div>
+      <div>
+        <h1>MYSTERY AI</h1>
+        <p>STUDIO · CREATOR</p>
+      </div>
+    </div>
+
+    <nav>
+      <div class="nav-label">WORKSPACE</div>
+      <button class="nav-btn active" data-view="dashboard">◈ Dashboard</button>
+      <button class="nav-btn" data-view="creator">✦ Story Creator</button>
+      <button class="nav-btn" data-view="library">▤ My Library</button>
+      <button class="nav-btn" data-view="automation">↻ Automation</button>
+
+      <div class="nav-label">MANAGEMENT</div>
+      <button class="nav-btn" data-view="settings">⚙ Settings</button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <strong>✦ Creator Mode</strong>
+      Your mystery content workspace.<br>
+      External AI services are not connected yet.
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <h2 id="pageTitle">Dashboard</h2>
+        <p id="pageSubtitle">Your mystery content command center.</p>
+      </div>
+      <div class="badge"><span class="dot"></span> STUDIO READY</div>
+    </header>
+
+    <section id="dashboardView">
+      <div class="hero">
+        <div class="eyebrow">✦ YOUR AI CONTENT WORKSPACE</div>
+        <h3>Turn mysterious stories into captivating content.</h3>
+        <p>
+          Create original English scripts, organize your ideas and prepare
+          your next mystery video from one simple dashboard.
+        </p>
+        <div class="hero-actions">
+          <button class="button primary" data-go="creator">✦ Create a story</button>
+          <button class="button" data-go="library">▤ Open library</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Saved stories</div>
+          <div class="stat-value" id="storyCount">0</div>
+          <div class="stat-note">Stored in this browser</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Published videos</div>
+          <div class="stat-value">0</div>
+          <div class="stat-note">No platform connected</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Monthly cost</div>
+          <div class="stat-value">€0</div>
+          <div class="stat-note">Current prototype</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h3>Quick creation</h3>
+        <span>English content</span>
+      </div>
+
+      <div class="workspace">
+        <div class="card">
+          <h4>Generate a story idea</h4>
+          <p class="sub">Create a starting point for your next mystery video.</p>
+
+          <label for="quickCategory">Story category</label>
+          <select id="quickCategory">
+            <option value="Historical mysteries">Historical mysteries</option>
+            <option value="Unexplained disappearances">Unexplained disappearances</option>
+            <option value="Strange scientific discoveries">Strange scientific discoveries</option>
+            <option value="Unusual true stories">Unusual true stories</option>
+            <option value="Unsolved mysteries">Unsolved mysteries</option>
+          </select>
+
+          <button class="button primary full" id="quickGenerate">Generate idea</button>
+          <div class="result" id="quickResult">Your story idea will appear here.</div>
+        </div>
+
+        <div class="card">
+          <h4>Production status</h4>
+          <p class="sub">Your current workspace status.</p>
+          <p style="font-size:13px;line-height:2.2">
+            <span style="color:var(--cyan)">●</span> Dashboard available<br>
+            <span style="color:var(--cyan)">●</span> Local story library<br>
+            <span style="color:#f2c66d">●</span> AI provider not connected<br>
+            <span style="color:#f2c66d">●</span> Video rendering not connected<br>
+            <span style="color:#f2c66d">●</span> Social publishing not connected
+          </p>
+          <div class="notice">
+            This is the first interface version. Real AI generation,
+            video rendering and automatic publishing require backend
+            services and authorized integrations.
+          </div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h3>Recent stories</h3>
+        <button class="button" data-go="library">View all</button>
+      </div>
+      <div class="video-list" id="recentList"></div>
+    </section>
+
+    <section id="creatorView" class="hidden">
+      <div class="card">
+        <h4>✦ Mystery Story Creator</h4>
+        <p class="sub">
+          Prepare an original story concept. This prototype generates a
+          local outline; it does not yet call an external AI service.
+        </p>
+
+        <label for="storyTitle">Working title</label>
+        <input id="storyTitle" maxlength="120" placeholder="e.g. The Village That Vanished">
+
+        <label for="storyCategory">Category</label>
+        <select id="storyCategory">
+          <option>Historical mysteries</option>
+          <option>Unexplained disappearances</option>
+          <option>Unusual true stories</option>
+          <option>Scientific mysteries</option>
+          <option>Unsolved cases</option>
+        </select>
+
+        <label for="storyDuration">Video duration</label>
+        <select id="storyDuration">
+          <option value="30-45 seconds">30–45 seconds</option>
+          <option value="60-90 seconds">60–90 seconds</option>
+        </select>
+
+        <label for="storyNotes">Facts, sources or notes (optional)</label>
+        <textarea id="storyNotes" maxlength="3000" placeholder="Add verified facts or source notes here..."></textarea>
+
+        <button class="button primary full" id="createStory">Create story outline</button>
+        <div id="storyResult" class="result">Your outline will appear here.</div>
+
+        <div class="hero-actions">
+          <button class="button" id="saveStory">Save to library</button>
+          <button class="button" id="copyStory">Copy outline</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="libraryView" class="hidden">
+      <div class="section-head">
+        <h3>My Story Library</h3>
+        <span id="libraryCount">0 stories</span>
+      </div>
+      <div class="video-list" id="libraryList"></div>
+    </section>
+
+    <section id="automationView" class="hidden">
+      <div class="card">
+        <h4>↻ Automation Center</h4>
+        <p class="sub">
+          Prepare the settings for a future automated production workflow.
+        </p>
+
+        <label for="dailyTarget">Target stories per day</label>
+        <select id="dailyTarget">
+          <option value="1">1 story per day</option>
+          <option value="2">2 stories per day</option>
+          <option value="3">3 stories per day</option>
+          <option value="5">5 stories per day</option>
+        </select>
+
+        <label for="publishPlatform">Preferred platform</label>
+        <select id="publishPlatform">
+          <option>YouTube Shorts</option>
+          <option>TikTok</option>
+          <option>Instagram Reels</option>
+          <option>All compatible platforms</option>
+        </select>
+
+        <label for="autoPublish">Publishing preference</label>
+        <select id="autoPublish">
+          <option value="review">Review each video before publishing</option>
+          <option value="scheduled">Automatic publishing after setup</option>
+        </select>
+
+        <button class="button primary full" id="saveAutomation">Save preferences</button>
+
+        <div class="notice">
+          Saving these settings does not activate a background process.
+          Automatic generation and publication will only work after we
+          connect the necessary backend, AI services and official platform APIs.
+        </div>
+        <div class="result" id="automationResult">Automation is not active.</div>
+      </div>
+    </section>
+
+    <section id="settingsView" class="hidden">
+      <div class="card">
+        <h4>⚙ Workspace Settings</h4>
+        <p class="sub">Basic preferences for Mystery AI Studio.</p>
+
+        <label for="creatorName">Workspace name</label>
+        <input id="creatorName" value="Mystery AI Studio" maxlength="80">
+
+        <label for="contentLanguage">Content language</label>
+        <select id="contentLanguage">
+          <option value="English">English</option>
+        </select>
+
+        <label for="contentStyle">Narrative style</label>
+        <select id="contentStyle">
+          <option>Cinematic documentary</option>
+          <option>Suspenseful storytelling</option>
+          <option>Scientific investigation</option>
+          <option>Historical documentary</option>
+        </select>
+
+        <button class="button primary full" id="saveSettings">Save settings</button>
+
+        <div class="notice">
+          Never place API tokens or passwords in this HTML file.
+          Secret keys must be stored securely on the server.
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      MYSTERY AI STUDIO · Prototype v1.0<br>
+      Stories should be checked against reliable sources before publication.
+      No external AI, rendering or social publishing service is connected yet.
+    </footer>
+  </main>
+</div>
+
+<div id="toast" class="toast hidden" role="status"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+
+  const views = [
+    "dashboard",
+    "creator",
+    "library",
+    "automation",
+    "settings"
+  ];
+
+  const titles = {
+    dashboard: ["Dashboard", "Your mystery content command center."],
+    creator: ["Story Creator", "Prepare your next English mystery story."],
+    library: ["My Library", "Your saved story ideas."],
+    automation: ["Automation Center", "Configure your future workflow."],
+    settings: ["Settings", "Manage your workspace preferences."]
+  };
+
+  let currentOutline = "";
+  let toastTimer;
+
+  function notify(message) {
+    $("toast").textContent = message;
+    $("toast").classList.remove("hidden");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $("toast").classList.add("hidden"), 3000);
+  }
+
+  function go(view) {
+    if (!views.includes(view)) return;
+
+    views.forEach(name => {
+      $(name + "View").classList.toggle("hidden", name !== view);
+    });
+
+    document.querySelectorAll(".nav-btn[data-view]").forEach(button => {
+      button.classList.toggle("active", button.dataset.view === view);
+    });
+
+    $("pageTitle").textContent = titles[view][0];
+    $("pageSubtitle").textContent = titles[view][1];
+
+    if (view === "library") renderLibrary();
+    if (view === "dashboard") renderRecent();
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.querySelectorAll("[data-view]").forEach(button => {
+    button.addEventListener("click", () => go(button.dataset.view));
+  });
+
+  document.querySelectorAll("[data-go]").forEach(button => {
+    button.addEventListener("click", () => go(button.dataset.go));
+  });
+
+  function getStories() {
+    try {
+      const data = JSON.parse(localStorage.getItem("mysteryStories") || "[]");
+      return Array.isArray(data) ? data : [];
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function setStories(stories) {
+    localStorage.setItem("mysteryStories", JSON.stringify(stories));
+    updateCounts();
+    renderLibrary();
+    renderRecent();
+  }
+
+  function updateCounts() {
+    const count = getStories().length;
+    $("storyCount").textContent = count;
+    $("libraryCount").textContent = count + (count === 1 ? " story" : " stories");
+  }
+
+  function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
+
+  function makeIdea(category) {
+    const ideas = {
+      "Historical mysteries": [
+        "The Ancient Map That Should Not Exist",
+        "The Lost City Hidden Beneath the Sand",
+        "The Historical Letter Nobody Could Explain"
+      ],
+      "Unexplained disappearances": [
+        "The Expedition That Never Returned",
+        "The Empty Cabin in the Mountains",
+        "The Disappearance That Changed a Village"
+      ],
+      "Strange scientific discoveries": [
+        "The Signal Scientists Could Not Identify",
+        "The Strange Object Found Deep Underground",
+        "The Experiment That Raised Unexpected Questions"
+      ],
+      "Unusual true stories": [
+        "The Ordinary Person Behind an Extraordinary Discovery",
+        "The Message Found Decades Too Late",
+        "The Coincidence That Shocked a Community"
+      ],
+      "Unsolved mysteries": [
+        "The Unsolved Case With One Missing Clue",
+        "The Photograph That Started a Mystery",
+        "The Locked Room With No Clear Explanation"
+      ]
+    };
+
+    const list = ideas[category] || ideas["Unsolved mysteries"];
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  $("quickGenerate").addEventListener("click", () => {
+    const category = $("quickCategory").value;
+    const idea = makeIdea(category);
+
+    $("quickResult").textContent =
+      "TITLE: " + idea + "\n\n" +
+      "CATEGORY: " + category + "\n\n" +
+      "HOOK: Imagine discovering a clue that changes everything you thought you knew.\n\n" +
+      "STORY PLAN:\n" +
+      "1. Introduce the mystery and its setting.\n" +
+      "2. Present the known facts and the key clue.\n" +
+      "3. Explain the strongest evidence and competing explanations.\n" +
+      "4. End with an unanswered question.\n\n" +
+      "IMPORTANT: This is a fictional content idea, not a verified real event. Research the topic before presenting it as true.";
+
+    notify("Story idea created.");
+  });
+
+  $("createStory").addEventListener("click", () => {
+    const title = $("storyTitle").value.trim();
+    const category = $("storyCategory").value;
+    const duration = $("storyDuration").value;
+    const notes = $("storyNotes").value.trim();
+
+    if (!title) {
+      notify("Please enter a working title first.");
+      $("storyTitle").focus();
+      return;
+    }
+
+    currentOutline =
+      "TITLE: " + title + "\n" +
+      "CATEGORY: " + category + "\n" +
+      "TARGET DURATION: " + duration + "\n\n" +
+      "OPENING HOOK (0–5 seconds)\n" +
+      "Start with a surprising question or a verified, compelling fact.\n\n" +
+      "CONTEXT\n" +
+      "Introduce the people, place and time. Give viewers only the details they need.\n\n" +
+      "MAIN STORY\n" +
+      "Present the key events in chronological order. Separate documented facts from theories.\n\n" +
+      "KEY CLUE\n" +
+      "Explain the strongest available evidence and why it matters.\n\n" +
+      "ENDING\n" +
+      "Summarize what is known, what remains uncertain, and invite viewers to discuss the evidence.\n\n" +
+      "VISUAL PLAN\n" +
+      "Scene 1: Atmospheric establishing shot.\n" +
+      "Scene 2: Location or historical context.\n" +
+      "Scene 3: Evidence, documents or relevant imagery.\n" +
+      "Scene 4: Main discovery or competing explanations.\n" +
+      "Scene 5: Closing question and title card.\n\n" +
+      "SOURCE NOTES\n" +
+      (notes || "No sources supplied. Research and verify before publication.") +
+      "\n\nDISCLAIMER\n" +
+      "This is a planning outline, not a finished researched script. Do not invent facts or present an unverified story as true.";
+
+    $("storyResult").textContent = currentOutline;
+    notify("Story outline prepared.");
+  });
+
+  $("saveStory").addEventListener("click", () => {
+    if (!currentOutline) {
+      notify("Create an outline first.");
+      return;
+    }
+
+    const stories = getStories();
+
+    stories.unshift({
+      id: Date.now(),
+      title: $("storyTitle").value.trim(),
+      category: $("storyCategory").value,
+      duration: $("storyDuration").value,
+      outline: currentOutline,
+      createdAt: new Date().toISOString()
+    });
+
+    try {
+      setStories(stories);
+      notify("Story saved to your browser.");
+    } catch (_) {
+      notify("Storage is full. Copy your outline before clearing old stories.");
+    }
+  });
+
+  $("copyStory").addEventListener("click", async () => {
+    if (!currentOutline) {
+      notify("Create an outline first.");
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(currentOutline);
+      notify("Outline copied.");
+    } catch (_) {
+      const area = document.createElement("textarea");
+      area.value = currentOutline;
+      document.body.appendChild(area);
+      area.select();
+      const success = document.execCommand("copy");
+      area.remove();
+      notify(success ? "Outline copied." : "Please select and copy the outline manually.");
+    }
+  });
+
+  function storyCard(story) {
+    const card = document.createElement("article");
+    card.className = "video-card";
+
+    const thumb = document.createElement("div");
+    thumb.className = "video-thumb";
+    thumb.textContent = "🌒";
+
+    const status = document.createElement("div");
+    status.className = "status";
+    status.textContent = "STORY OUTLINE";
+
+    const heading = document.createElement("h4");
+    heading.textContent = story.title || "Untitled story";
+
+    const description = document.createElement("p");
+    description.textContent = story.category + " · " + story.duration;
+
+    const open = document.createElement("button");
+    open.className = "button";
+    open.textContent = "Open outline";
+    open.addEventListener("click", () => {
+      currentOutline = story.outline;
+      $("storyTitle").value = story.title;
+      $("storyCategory").value = story.category;
+      $("storyDuration").value = story.duration;
+      $("storyResult").textContent = story.outline;
+      go("creator");
+    });
+
+    card.append(thumb, status, heading, description, open);
+    return card;
+  }
+
+  function renderLibrary() {
+    const stories = getStories();
+    const list = $("libraryList");
+    list.replaceChildren();
+
+    if (!stories.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "No saved stories yet. Create your first story outline to get started.";
+      list.appendChild(empty);
+      return;
+    }
+
+    stories.forEach(story => list.appendChild(storyCard(story)));
+  }
+
+  function renderRecent() {
+    const stories = getStories().slice(0, 3);
+    const list = $("recentList");
+    list.replaceChildren();
+
+    if (!stories.length) {
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "Your saved stories will appear here.";
+      list.appendChild(empty);
+      return;
+    }
+
+    stories.forEach(story => list.appendChild(storyCard(story)));
+  }
+
+  $("saveAutomation").addEventListener("click", () => {
+    const settings = {
+      dailyTarget: $("dailyTarget").value,
+      platform: $("publishPlatform").value,
+      publishMode: $("autoPublish").value
+    };
+
+    localStorage.setItem("mysteryAutomationPreferences", JSON.stringify(settings));
+
+    $("automationResult").textContent =
+      "Preferences saved locally.\n\n" +
+      "Target: " + settings.dailyTarget + " story/stories per day\n" +
+      "Platform: " + settings.platform + "\n" +
+      "Publishing: " +
+      (settings.publishMode === "review"
+        ? "Review before publishing"
+        : "Automatic publishing requested") +
+      "\n\nBackground automation is not active. Backend services and authorized platform integrations must be configured first.";
+
+    notify("Preferences saved.");
+  });
+
+  $("saveSettings").addEventListener("click", () => {
+    const settings = {
+      name: $("creatorName").value.trim() || "Mystery AI Studio",
+      language: $("contentLanguage").value,
+      style: $("contentStyle").value
+    };
+
+    localStorage.setItem("mysteryWorkspaceSettings", JSON.stringify(settings));
+    notify("Workspace preferences saved.");
+  });
+
+  function loadPreferences() {
+    try {
+      const settings = JSON.parse(localStorage.getItem("mysteryAutomationPreferences") || "null");
+
+      if (settings) {
+        $("dailyTarget").value = settings.dailyTarget || "1";
+        $("publishPlatform").value = settings.platform || "YouTube Shorts";
+        $("autoPublish").value = settings.publishMode || "review";
+      }
+    } catch (_) {}
+
+    try {
+      const settings = JSON.parse(localStorage.getItem("mysteryWorkspaceSettings") || "null");
+
+      if (settings) {
+        $("creatorName").value = settings.name || "Mystery AI Studio";
+        $("contentLanguage").value = settings.language || "English";
+        $("contentStyle").value = settings.style || "Cinematic documentary";
+      }
+    } catch (_) {}
+  }
+
+  loadPreferences();
+  updateCounts();
+  renderLibrary();
+  renderRecent();
+})();
+</script>
+</body>
+</html>
