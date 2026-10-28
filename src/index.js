@@ -127,6 +127,10 @@ export default {
       }
     }
 
-    return errorResponse("Route introuvable.", 404);
+        if (url.pathname.startsWith("/api/")) {
+      return errorResponse("Route introuvable.", 404);
+    }
+
+    return env.ASSETS.fetch(request);
   },
 };
