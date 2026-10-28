@@ -1,5 +1,7 @@
 name = "mystery-ai-studio"
+main = "src/index.js"
 compatibility_date = "2026-10-28"
 
 [assets]
 directory = "."
+binding = "ASSETS"
