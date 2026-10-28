@@ -1,1174 +1,2561 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#090b12">
-  <meta name="description" content="Mystery AI Studio - Create captivating mystery videos with AI.">
-  <title>Mystery AI Studio</title>
-
-  <style>
-    :root {
-      --bg: #090b12;
-      --panel: #121622;
-      --panel2: #191e2d;
-      --text: #f4f5fb;
-      --muted: #929bb0;
-      --purple: #9270ff;
-      --cyan: #48e0d0;
-      --border: #282e40;
-      --danger: #ff647c;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: Inter, system-ui, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-    }
-
-    button, input, select, textarea {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .app {
-      display: flex;
-      min-height: 100vh;
-    }
-
-    aside {
-      width: 245px;
-      padding: 26px 16px;
-      border-right: 1px solid var(--border);
-      background: #0d1019;
-      flex-shrink: 0;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin: 0 8px 35px;
-    }
-
-    .brand-icon {
-      width: 43px;
-      height: 43px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-      background: linear-gradient(135deg, var(--purple), #5141a9);
-    }
-
-    .brand h1 {
-      font-size: 15px;
-      letter-spacing: .3px;
-    }
-
-    .brand p {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    .nav-label {
-      color: #707b91;
-      font-size: 10px;
-      letter-spacing: 1.5px;
-      margin: 24px 10px 10px;
-    }
-
-    .nav-btn {
-      width: 100%;
-      border: 0;
-      background: transparent;
-      color: var(--muted);
-      text-align: left;
-      padding: 13px 12px;
-      border-radius: 10px;
-      margin: 3px 0;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-    }
-
-    .nav-btn:hover, .nav-btn.active {
-      background: #211b3b;
-      color: white;
-    }
-
-    .sidebar-bottom {
-      margin-top: 45px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      font-size: 12px;
-      line-height: 1.6;
-      color: var(--muted);
-    }
-
-    .sidebar-bottom strong {
-      color: white;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    main {
-      flex: 1;
-      min-width: 0;
-      padding: 28px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 32px;
-    }
-
-    .topbar h2 {
-      font-size: 24px;
-    }
-
-    .topbar p {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 7px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: #162a2a;
-      color: var(--cyan);
-      border: 1px solid #24514b;
-      border-radius: 20px;
-      padding: 8px 12px;
-      font-size: 11px;
-      white-space: nowrap;
-    }
-
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--cyan);
-    }
-
-    .hero {
-      padding: 32px;
-      border-radius: 20px;
-      border: 1px solid #383051;
-      background:
-        radial-gradient(ellipse at 85% 10%, #49347a55, transparent 45%),
-        linear-gradient(125deg, #19152a, #121622 65%);
-      margin-bottom: 25px;
-    }
-
-    .eyebrow {
-      color: var(--cyan);
-      font-size: 11px;
-      letter-spacing: 1.6px;
-      font-weight: 700;
-      margin-bottom: 15px;
-    }
-
-    .hero h3 {
-      font-size: clamp(25px, 4vw, 39px);
-      line-height: 1.2;
-      max-width: 620px;
-      margin-bottom: 13px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      max-width: 570px;
-      line-height: 1.7;
-      font-size: 13px;
-    }
-
-    .button {
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: white;
-      background: var(--panel2);
-      font-size: 12px;
-      font-weight: 650;
-    }
-
-    .button.primary {
-      background: linear-gradient(120deg, #9270ff, #7351df);
-      border: 0;
-    }
-
-    .button:hover {
-      filter: brightness(1.15);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 15px;
-      margin-bottom: 28px;
-    }
-
-    .stat {
-      padding: 20px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--panel);
-    }
-
-    .stat-label {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .stat-value {
-      font-size: 27px;
-      font-weight: 750;
-      margin-top: 12px;
-    }
-
-    .stat-note {
-      font-size: 11px;
-      color: var(--cyan);
-      margin-top: 6px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin: 30px 0 16px;
-    }
-
-    .section-head h3 {
-      font-size: 17px;
-    }
-
-    .section-head span {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .workspace {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr);
-      gap: 18px;
-    }
-
-    .card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 22px;
-      min-width: 0;
-    }
-
-    .card h4 {
-      font-size: 15px;
-      margin-bottom: 8px;
-    }
-
-    .card .sub {
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      margin-bottom: 8px;
-      color: #c7ccda;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: #0c0f18;
-      color: white;
-      border-radius: 9px;
-      padding: 12px;
-      margin-bottom: 16px;
-      outline: none;
-    }
-
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--purple);
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
-    .full {
-      width: 100%;
-    }
-
-    .result {
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      background: #0c0f18;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 15px;
-      font-size: 12px;
-      line-height: 1.8;
-      color: #d6d9e6;
-      min-height: 100px;
-      margin-top: 15px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .video-list {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .video-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 15px;
-      min-width: 0;
-    }
-
-    .video-thumb {
-      height: 115px;
-      border-radius: 9px;
-      background: linear-gradient(145deg, #342755, #121c2b);
-      display: grid;
-      place-items: center;
-      font-size: 32px;
-      margin-bottom: 13px;
-    }
-
-    .video-card h4 {
-      font-size: 12px;
-      line-height: 1.5;
-      margin-bottom: 8px;
-      overflow-wrap: anywhere;
-    }
-
-    .video-card p {
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 12px;
-    }
-
-    .video-card .button {
-      width: 100%;
-      padding: 9px;
-    }
-
-    .status {
-      display: inline-block;
-      padding: 5px 8px;
-      border-radius: 6px;
-      font-size: 10px;
-      background: #24213c;
-      color: #b9a7ff;
-      margin-bottom: 12px;
-    }
-
-    .notice {
-      border: 1px solid #51432b;
-      background: #282116;
-      color: #e7d4a4;
-      border-radius: 10px;
-      padding: 13px;
-      line-height: 1.6;
-      font-size: 11px;
-      margin-top: 14px;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 30px 10px;
-      color: var(--muted);
-      font-size: 12px;
-      border: 1px dashed var(--border);
-      border-radius: 12px;
-      grid-column: 1 / -1;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 22px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #24213c;
-      border: 1px solid #514078;
-      color: white;
-      padding: 13px 18px;
-      border-radius: 12px;
-      font-size: 12px;
-      box-shadow: 0 8px 30px #0008;
-      z-index: 100;
-      max-width: 90%;
-    }
-
-    footer {
-      margin-top: 35px;
-      padding: 20px 0;
-      color: #687187;
-      font-size: 11px;
-      border-top: 1px solid var(--border);
-      line-height: 1.8;
-    }
-
-    @media (max-width: 950px) {
-      aside {
-        width: 190px;
-      }
-
-      main {
-        padding: 20px;
-      }
-
-      .workspace {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 650px) {
-      .app {
-        display: block;
-        padding-bottom: 65px;
-      }
-
-      aside {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 50;
-        width: 100%;
-        height: 62px;
-        padding: 5px;
-        border-right: 0;
-        border-top: 1px solid var(--border);
-        background: #0d1019;
-      }
-
-      .brand, .nav-label, .sidebar-bottom {
-        display: none;
-      }
-
-      aside nav {
-        display: flex;
-        justify-content: space-around;
-      }
-
-      .nav-btn {
-        width: auto;
-        flex: 1;
-        justify-content: center;
-        flex-direction: column;
-        gap: 3px;
-        padding: 6px 2px;
-        margin: 0;
-        font-size: 9px;
-      }
-
-      main {
-        padding: 18px 14px;
-      }
-
-      .topbar {
-        margin-bottom: 22px;
-      }
-
-      .topbar h2 {
-        font-size: 20px;
-      }
-
-      .topbar p {
-        font-size: 11px;
-      }
-
-      .badge {
-        font-size: 9px;
-        padding: 7px;
-      }
-
-      .hero {
-        padding: 22px 18px;
-      }
-
-      .stats {
-        gap: 8px;
-      }
-
-      .stat {
-        padding: 12px 10px;
-      }
-
-      .stat-label {
-        font-size: 10px;
-      }
-
-      .stat-value {
-        font-size: 21px;
-      }
-
-      .stat-note {
-        font-size: 9px;
-      }
-
-      .video-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .card {
-        padding: 17px;
-      }
-    }
-
-    @media (max-width: 360px) {
-      .video-list {
-        grid-template-columns: 1fr;
-      }
-
-      .badge {
-        display: none;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d18">
+<title>Mystery AI Studio</title>
+
+<style>
+:root {
+  --bg: #090d18;
+  --panel: #111827;
+  --panel2: #151e30;
+  --border: #263249;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --purple: #8b5cf6;
+  --blue: #38bdf8;
+  --green: #34d399;
+  --orange: #fbbf24;
+  --red: #fb7185;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: #0c1220;
+  border-right: 1px solid var(--border);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 35px;
+  padding: 0 8px;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #8b5cf6, #4f46e5);
+  border-radius: 13px;
+  font-size: 22px;
+  box-shadow: 0 5px 25px #8b5cf633;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.brand p {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.nav-label {
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 0 12px;
+  margin: 18px 0 10px;
+}
+
+.nav-btn {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #aab6ca;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+  font-size: 13px;
+  transition: .2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  color: white;
+  background: #202844;
+}
+
+.nav-btn.active {
+  box-shadow: inset 3px 0 var(--purple);
+}
+
+.nav-icon {
+  width: 22px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+
+.connection-box {
+  background: #151e30;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.connection-title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 9px;
+  font-weight: 700;
+}
+
+.connection-box p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--orange);
+  margin-right: 5px;
+}
+
+/* MAIN */
+
+.main {
+  min-width: 0;
+  flex: 1;
+}
+
+.topbar {
+  min-height: 76px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 30px;
+  gap: 16px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.topbar h2 {
+  font-size: 19px;
+  margin: 0;
+}
+
+.topbar p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 5px 0 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 37px;
+  height: 37px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: #2b2450;
+  color: #c4b5fd;
+  font-weight: 800;
+}
+
+.mobile-menu {
+  display: none;
+  background: transparent;
+  color: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+
+.content {
+  padding: 28px 30px 50px;
+  max-width: 1600px;
+  margin: auto;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.page-heading h2 {
+  font-size: 25px;
+  margin: 0 0 8px;
+}
+
+.page-heading p {
+  color: var(--muted);
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* BUTTONS */
+
+.btn {
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 15px;
+  color: var(--text);
+  background: #172033;
+  font-size: 12px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.btn:hover {
+  filter: brightness(1.2);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #8b5cf6, #6d4aff);
+  border-color: transparent;
+  color: white;
+}
+
+.btn-success {
+  background: #123b32;
+  border-color: #1e6251;
+  color: #6ee7b7;
+}
+
+.btn-danger {
+  background: #3c1c29;
+  border-color: #633043;
+  color: #fda4af;
+}
+
+.btn-small {
+  padding: 7px 10px;
+  font-size: 11px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+/* CARDS */
+
+.grid {
+  display: grid;
+  gap: 17px;
+}
+
+.stats-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 24px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  padding: 20px;
+  min-width: 0;
+}
+
+.stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::after {
+  content: "";
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #8b5cf60c;
+  right: -20px;
+  top: -20px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.stat-number {
+  font-size: 29px;
+  font-weight: 800;
+  margin: 13px 0 7px;
+}
+
+.stat-note {
+  font-size: 11px;
+  color: #8290a7;
+}
+
+.stat-icon {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.two-columns {
+  grid-template-columns: minmax(0, 1.5fr) minmax(270px, 1fr);
+  margin-bottom: 22px;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.card-title h3 {
+  font-size: 14px;
+  margin: 0;
+}
+
+.card-title span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+/* PIPELINE */
+
+.pipeline {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.pipeline-step {
+  background: #151e30;
+  border: 1px solid #29354a;
+  border-radius: 11px;
+  padding: 14px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.pipeline-step:hover {
+  border-color: var(--purple);
+  transform: translateY(-2px);
+}
+
+.pipeline-icon {
+  font-size: 23px;
+  margin-bottom: 10px;
+}
+
+.pipeline-name {
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.pipeline-status {
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.pipeline-status.ok {
+  color: var(--green);
+}
+
+/* PROJECT LIST */
+
+.project-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #151e30;
+  border: 1px solid #263249;
+  border-radius: 11px;
+}
+
+.project-cover {
+  width: 43px;
+  height: 53px;
+  flex-shrink: 0;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(145deg, #32265e, #17243a);
+  font-size: 22px;
+}
+
+.project-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-info h4 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.project-info p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.project-item-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 6px;
+  padding: 5px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-draft {
+  background: #292b3c;
+  color: #c4b5fd;
+}
+
+.badge-progress {
+  background: #3c3020;
+  color: #fcd34d;
+}
+
+.badge-ready {
+  background: #123b32;
+  color: #6ee7b7;
+}
+
+.badge-published {
+  background: #17314c;
+  color: #7dd3fc;
+}
+
+/* QUICK ACTIONS */
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.quick-action {
+  text-align: left;
+  background: #151e30;
+  border: 1px solid #29354a;
+  border-radius: 11px;
+  color: white;
+  padding: 15px;
+}
+
+.quick-action:hover {
+  border-color: var(--purple);
+}
+
+.quick-action .quick-icon {
+  font-size: 22px;
+  margin-bottom: 9px;
+}
+
+.quick-action strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 5px;
+}
+
+.quick-action small {
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* FORMS */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 17px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 17px;
+}
+
+.field label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  color: white;
+  background: #0c1423;
+  border: 1px solid #2b3850;
+  border-radius: 9px;
+  padding: 12px;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--purple);
+}
+
+.field textarea {
+  min-height: 120px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.field select option {
+  background: #111827;
+}
+
+.helper {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.output-box {
+  background: #0c1423;
+  border: 1px solid #2b3850;
+  border-radius: 12px;
+  padding: 17px;
+  min-height: 150px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+
+.empty-state {
+  padding: 40px 15px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.empty-state .empty-icon {
+  font-size: 35px;
+  margin-bottom: 12px;
+}
+
+/* STATUS */
+
+.notice {
+  border: 1px solid #4a3c20;
+  background: #211c12;
+  color: #f5d58b;
+  padding: 13px 15px;
+  border-radius: 10px;
+  font-size: 12px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.notice strong {
+  color: #ffe3a3;
+}
+
+.info-notice {
+  border-color: #294767;
+  background: #101f32;
+  color: #b6d9f6;
+}
+
+.success-notice {
+  border-color: #245744;
+  background: #10271f;
+  color: #a7f3d0;
+}
+
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 20px 0;
+}
+
+.section-space {
+  margin-top: 22px;
+}
+
+/* CALENDAR */
+
+.calendar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calendar-item {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  background: #151e30;
+  border: 1px solid var(--border);
+  padding: 14px;
+  border-radius: 10px;
+}
+
+.calendar-date {
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  background: #28204a;
+  color: #c4b5fd;
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.calendar-info {
+  flex: 1;
+}
+
+.calendar-info strong {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.calendar-info span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* AUTOMATION */
+
+.automation-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.automation-row:last-child {
+  border-bottom: 0;
+}
+
+.automation-row strong {
+  font-size: 13px;
+}
+
+.automation-row p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+
+.toggle {
+  width: 43px;
+  height: 24px;
+  border: 0;
+  border-radius: 30px;
+  background: #374151;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.toggle::after {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: .2s;
+}
+
+.toggle.on {
+  background: var(--purple);
+}
+
+.toggle.on::after {
+  transform: translateX(19px);
+}
+
+/* MODAL */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #000b;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 50;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal {
+  background: #111827;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 650px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 17px;
+}
+
+.close-btn {
+  background: transparent;
+  color: white;
+  border: 0;
+  font-size: 24px;
+}
+
+.toast {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: #16392f;
+  color: #a7f3d0;
+  border: 1px solid #27634d;
+  padding: 13px 18px;
+  border-radius: 10px;
+  font-size: 12px;
+  z-index: 100;
+  display: none;
+  max-width: calc(100% - 44px);
+}
+
+.toast.show {
+  display: block;
+}
+
+.footer {
+  color: #64748b;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 35px;
+  line-height: 1.8;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pipeline {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .two-columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    position: fixed;
+    left: -270px;
+    top: 0;
+    bottom: 0;
+    z-index: 40;
+    transition: left .25s;
+    box-shadow: 10px 0 35px #0005;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
+
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .content {
+    padding: 22px 15px 35px;
+  }
+
+  .page-heading {
+    flex-direction: column;
+  }
+
+  .page-heading h2 {
+    font-size: 22px;
+  }
+
+  .stats-grid {
+    gap: 10px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  .stat-number {
+    font-size: 25px;
+  }
+
+  .pipeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .project-item {
+    align-items: flex-start;
+  }
+
+  .project-item-actions {
+    flex-direction: column;
+  }
+
+  .topbar-right .date-label {
+    display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .quick-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-cover {
+    width: 35px;
+    height: 45px;
+  }
+}
+</style>
 </head>
 
 <body>
+
 <div class="app">
 
-  <aside>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+
     <div class="brand">
-      <div class="brand-icon">🌒</div>
+      <div class="brand-icon">🎬</div>
       <div>
-        <h1>MYSTERY AI</h1>
-        <p>STUDIO · CREATOR</p>
+        <h1>Mystery AI Studio</h1>
+        <p>TikTok Production Platform</p>
       </div>
     </div>
 
-    <nav>
-      <div class="nav-label">WORKSPACE</div>
-      <button class="nav-btn active" data-view="dashboard">◈ Dashboard</button>
-      <button class="nav-btn" data-view="creator">✦ Story Creator</button>
-      <button class="nav-btn" data-view="library">▤ My Library</button>
-      <button class="nav-btn" data-view="automation">↻ Automation</button>
+    <div class="nav-label">WORKSPACE</div>
 
-      <div class="nav-label">MANAGEMENT</div>
-      <button class="nav-btn" data-view="settings">⚙ Settings</button>
-    </nav>
+    <button class="nav-btn active" data-page="dashboard">
+      <span class="nav-icon">▦</span> Dashboard
+    </button>
+
+    <button class="nav-btn" data-page="creator">
+      <span class="nav-icon">✦</span> Story Creator
+    </button>
+
+    <button class="nav-btn" data-page="production">
+      <span class="nav-icon">🎞</span> Video Production
+    </button>
+
+    <button class="nav-btn" data-page="library">
+      <span class="nav-icon">▤</span> My Library
+    </button>
+
+    <button class="nav-btn" data-page="calendar">
+      <span class="nav-icon">▦</span> Publishing Calendar
+    </button>
+
+    <div class="nav-label">MANAGEMENT</div>
+
+    <button class="nav-btn" data-page="automation">
+      <span class="nav-icon">⟳</span> Automation Center
+    </button>
+
+    <button class="nav-btn" data-page="analytics">
+      <span class="nav-icon">↗</span> Analytics
+    </button>
+
+    <button class="nav-btn" data-page="settings">
+      <span class="nav-icon">⚙</span> Settings
+    </button>
 
     <div class="sidebar-bottom">
-      <strong>✦ Creator Mode</strong>
-      Your mystery content workspace.<br>
-      External AI services are not connected yet.
+      <div class="connection-box">
+        <div class="connection-title">
+          <span>System status</span>
+          <span>●</span>
+        </div>
+        <p><span class="status-dot"></span> Interface opérationnelle</p>
+        <p style="margin-top:6px">IA : non connectée</p>
+        <p>Publication TikTok : non connectée</p>
+      </div>
     </div>
+
   </aside>
 
-  <main>
+  <!-- MAIN -->
+  <main class="main">
+
     <header class="topbar">
-      <div>
-        <h2 id="pageTitle">Dashboard</h2>
-        <p id="pageSubtitle">Your mystery content command center.</p>
+      <div class="topbar-left">
+        <button class="mobile-menu" id="mobileMenu" aria-label="Ouvrir le menu">☰</button>
+        <div>
+          <h2 id="topTitle">Dashboard</h2>
+          <p id="topSubtitle">Pilote toute ta production TikTok au même endroit.</p>
+        </div>
       </div>
-      <div class="badge"><span class="dot"></span> STUDIO READY</div>
+
+      <div class="topbar-right">
+        <span class="date-label" id="currentDate" style="font-size:11px;color:var(--muted)"></span>
+        <div class="avatar">MS</div>
+      </div>
     </header>
 
-    <section id="dashboardView">
-      <div class="hero">
-        <div class="eyebrow">✦ YOUR AI CONTENT WORKSPACE</div>
-        <h3>Turn mysterious stories into captivating content.</h3>
-        <p>
-          Create original English scripts, organize your ideas and prepare
-          your next mystery video from one simple dashboard.
-        </p>
-        <div class="hero-actions">
-          <button class="button primary" data-go="creator">✦ Create a story</button>
-          <button class="button" data-go="library">▤ Open library</button>
-        </div>
-      </div>
+    <div class="content">
 
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-label">Saved stories</div>
-          <div class="stat-value" id="storyCount">0</div>
-          <div class="stat-note">Stored in this browser</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Published videos</div>
-          <div class="stat-value">0</div>
-          <div class="stat-note">No platform connected</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Monthly cost</div>
-          <div class="stat-value">€0</div>
-          <div class="stat-note">Current prototype</div>
-        </div>
-      </div>
+      <!-- DASHBOARD -->
+      <section class="page active" id="page-dashboard">
 
-      <div class="section-head">
-        <h3>Quick creation</h3>
-        <span>English content</span>
-      </div>
+        <div class="page-heading">
+          <div>
+            <h2>Bienvenue dans ton studio 👋</h2>
+            <p>Organise tes histoires, pilote la production et prépare tes prochaines vidéos.</p>
+          </div>
 
-      <div class="workspace">
+          <button class="btn btn-primary" onclick="openNewProject()">
+            ＋ Nouveau projet
+          </button>
+        </div>
+
+        <div class="notice">
+          <strong>État actuel du studio :</strong>
+          le tableau de bord et la gestion locale des projets fonctionnent.
+          Les connexions à l'IA, au moteur de rendu vidéo et à TikTok restent à intégrer.
+        </div>
+
+        <div class="grid stats-grid">
+
+          <div class="card stat-card">
+            <div class="stat-icon">📁</div>
+            <div class="stat-label">Projets créés</div>
+            <div class="stat-number" id="statProjects">0</div>
+            <div class="stat-note">Projets enregistrés dans ce navigateur</div>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-icon">✍️</div>
+            <div class="stat-label">Scripts prêts</div>
+            <div class="stat-number" id="statScripts">0</div>
+            <div class="stat-note">Projets possédant un scénario</div>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-icon">🎬</div>
+            <div class="stat-label">Vidéos finalisées</div>
+            <div class="stat-number" id="statVideos">0</div>
+            <div class="stat-note">Statut finalisé confirmé manuellement</div>
+          </div>
+
+          <div class="card stat-card">
+            <div class="stat-icon">🚀</div>
+            <div class="stat-label">Publications</div>
+            <div class="stat-number" id="statPublished">0</div>
+            <div class="stat-note">Publications confirmées manuellement</div>
+          </div>
+
+        </div>
+
+        <div class="grid two-columns">
+
+          <div class="card">
+            <div class="card-title">
+              <h3>Pipeline de production</h3>
+              <span>Vue du workflow</span>
+            </div>
+
+            <div class="pipeline">
+
+              <div class="pipeline-step" onclick="navigate('creator')">
+                <div class="pipeline-icon">💡</div>
+                <div class="pipeline-name">Idée</div>
+                <div class="pipeline-status ok">Disponible</div>
+              </div>
+
+              <div class="pipeline-step" onclick="navigate('creator')">
+                <div class="pipeline-icon">✍️</div>
+                <div class="pipeline-name">Script</div>
+                <div class="pipeline-status ok">Disponible</div>
+              </div>
+
+              <div class="pipeline-step" onclick="navigate('production')">
+                <div class="pipeline-icon">🎙️</div>
+                <div class="pipeline-name">Narration</div>
+                <div class="pipeline-status">À connecter</div>
+              </div>
+
+              <div class="pipeline-step" onclick="navigate('production')">
+                <div class="pipeline-icon">🖼️</div>
+                <div class="pipeline-name">Visuels</div>
+                <div class="pipeline-status">À connecter</div>
+              </div>
+
+              <div class="pipeline-step" onclick="navigate('production')">
+                <div class="pipeline-icon">🎞️</div>
+                <div class="pipeline-name">Montage</div>
+                <div class="pipeline-status">À connecter</div>
+              </div>
+
+              <div class="pipeline-step" onclick="navigate('calendar')">
+                <div class="pipeline-icon">📲</div>
+                <div class="pipeline-name">Publication</div>
+                <div class="pipeline-status">À connecter</div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <h3>Actions rapides</h3>
+              <span>Raccourcis</span>
+            </div>
+
+            <div class="quick-grid">
+
+              <button class="quick-action" onclick="openNewProject()">
+                <div class="quick-icon">🧠</div>
+                <strong>Nouvelle histoire</strong>
+                <small>Créer un projet et préparer son scénario.</small>
+              </button>
+
+              <button class="quick-action" onclick="navigate('library')">
+                <div class="quick-icon">📚</div>
+                <strong>Bibliothèque</strong>
+                <small>Retrouver et gérer tes projets.</small>
+              </button>
+
+              <button class="quick-action" onclick="navigate('production')">
+                <div class="quick-icon">🎬</div>
+                <strong>Production vidéo</strong>
+                <small>Suivre les étapes de fabrication.</small>
+              </button>
+
+              <button class="quick-action" onclick="navigate('calendar')">
+                <div class="quick-icon">📅</div>
+                <strong>Planification</strong>
+                <small>Organiser les dates de publication.</small>
+              </button>
+
+            </div>
+          </div>
+
+        </div>
+
         <div class="card">
-          <h4>Generate a story idea</h4>
-          <p class="sub">Create a starting point for your next mystery video.</p>
-
-          <label for="quickCategory">Story category</label>
-          <select id="quickCategory">
-            <option value="Historical mysteries">Historical mysteries</option>
-            <option value="Unexplained disappearances">Unexplained disappearances</option>
-            <option value="Strange scientific discoveries">Strange scientific discoveries</option>
-            <option value="Unusual true stories">Unusual true stories</option>
-            <option value="Unsolved mysteries">Unsolved mysteries</option>
-          </select>
-
-          <button class="button primary full" id="quickGenerate">Generate idea</button>
-          <div class="result" id="quickResult">Your story idea will appear here.</div>
+          <div class="card-title">
+            <h3>Projets récents</h3>
+            <button class="btn btn-small" onclick="navigate('library')">Voir la bibliothèque →</button>
+          </div>
+          <div class="project-list" id="recentProjects"></div>
         </div>
 
-        <div class="card">
-          <h4>Production status</h4>
-          <p class="sub">Your current workspace status.</p>
-          <p style="font-size:13px;line-height:2.2">
-            <span style="color:var(--cyan)">●</span> Dashboard available<br>
-            <span style="color:var(--cyan)">●</span> Local story library<br>
-            <span style="color:#f2c66d">●</span> AI provider not connected<br>
-            <span style="color:#f2c66d">●</span> Video rendering not connected<br>
-            <span style="color:#f2c66d">●</span> Social publishing not connected
-          </p>
-          <div class="notice">
-            This is the first interface version. Real AI generation,
-            video rendering and automatic publishing require backend
-            services and authorized integrations.
+      </section>
+
+      <!-- STORY CREATOR -->
+      <section class="page" id="page-creator">
+
+        <div class="page-heading">
+          <div>
+            <h2>Story Creator</h2>
+            <p>Prépare une histoire conçue pour une vidéo verticale TikTok.</p>
           </div>
         </div>
-      </div>
-
-      <div class="section-head">
-        <h3>Recent stories</h3>
-        <button class="button" data-go="library">View all</button>
-      </div>
-      <div class="video-list" id="recentList"></div>
-    </section>
-
-    <section id="creatorView" class="hidden">
-      <div class="card">
-        <h4>✦ Mystery Story Creator</h4>
-        <p class="sub">
-          Prepare an original story concept. This prototype generates a
-          local outline; it does not yet call an external AI service.
-        </p>
-
-        <label for="storyTitle">Working title</label>
-        <input id="storyTitle" maxlength="120" placeholder="e.g. The Village That Vanished">
-
-        <label for="storyCategory">Category</label>
-        <select id="storyCategory">
-          <option>Historical mysteries</option>
-          <option>Unexplained disappearances</option>
-          <option>Unusual true stories</option>
-          <option>Scientific mysteries</option>
-          <option>Unsolved cases</option>
-        </select>
-
-        <label for="storyDuration">Video duration</label>
-        <select id="storyDuration">
-          <option value="30-45 seconds">30–45 seconds</option>
-          <option value="60-90 seconds">60–90 seconds</option>
-        </select>
-
-        <label for="storyNotes">Facts, sources or notes (optional)</label>
-        <textarea id="storyNotes" maxlength="3000" placeholder="Add verified facts or source notes here..."></textarea>
-
-        <button class="button primary full" id="createStory">Create story outline</button>
-        <div id="storyResult" class="result">Your outline will appear here.</div>
-
-        <div class="hero-actions">
-          <button class="button" id="saveStory">Save to library</button>
-          <button class="button" id="copyStory">Copy outline</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="libraryView" class="hidden">
-      <div class="section-head">
-        <h3>My Story Library</h3>
-        <span id="libraryCount">0 stories</span>
-      </div>
-      <div class="video-list" id="libraryList"></div>
-    </section>
-
-    <section id="automationView" class="hidden">
-      <div class="card">
-        <h4>↻ Automation Center</h4>
-        <p class="sub">
-          Prepare the settings for a future automated production workflow.
-        </p>
-
-        <label for="dailyTarget">Target stories per day</label>
-        <select id="dailyTarget">
-          <option value="1">1 story per day</option>
-          <option value="2">2 stories per day</option>
-          <option value="3">3 stories per day</option>
-          <option value="5">5 stories per day</option>
-        </select>
-
-        <label for="publishPlatform">Preferred platform</label>
-        <select id="publishPlatform">
-          <option>YouTube Shorts</option>
-          <option>TikTok</option>
-          <option>Instagram Reels</option>
-          <option>All compatible platforms</option>
-        </select>
-
-        <label for="autoPublish">Publishing preference</label>
-        <select id="autoPublish">
-          <option value="review">Review each video before publishing</option>
-          <option value="scheduled">Automatic publishing after setup</option>
-        </select>
-
-        <button class="button primary full" id="saveAutomation">Save preferences</button>
 
         <div class="notice">
-          Saving these settings does not activate a background process.
-          Automatic generation and publication will only work after we
-          connect the necessary backend, AI services and official platform APIs.
+          <strong>Mode actuel :</strong> le générateur de cette version fonctionne localement
+          avec des modèles de rédaction. Il ne s'agit pas encore d'une génération par une IA externe.
         </div>
-        <div class="result" id="automationResult">Automation is not active.</div>
-      </div>
-    </section>
 
-    <section id="settingsView" class="hidden">
-      <div class="card">
-        <h4>⚙ Workspace Settings</h4>
-        <p class="sub">Basic preferences for Mystery AI Studio.</p>
+        <div class="grid two-columns">
 
-        <label for="creatorName">Workspace name</label>
-        <input id="creatorName" value="Mystery AI Studio" maxlength="80">
+          <div class="card">
+            <div class="card-title">
+              <h3>Paramètres du projet</h3>
+              <span>Étape 1</span>
+            </div>
 
-        <label for="contentLanguage">Content language</label>
-        <select id="contentLanguage">
-          <option value="English">English</option>
-        </select>
+            <form id="creatorForm">
 
-        <label for="contentStyle">Narrative style</label>
-        <select id="contentStyle">
-          <option>Cinematic documentary</option>
-          <option>Suspenseful storytelling</option>
-          <option>Scientific investigation</option>
-          <option>Historical documentary</option>
-        </select>
+              <div class="field">
+                <label for="storyTitle">Titre du projet</label>
+                <input id="storyTitle" placeholder="Ex. Le village qui a disparu" required>
+              </div>
 
-        <button class="button primary full" id="saveSettings">Save settings</button>
+              <div class="field">
+                <label for="storyCategory">Catégorie</label>
+                <select id="storyCategory">
+                  <option value="Mystères historiques">Mystères historiques</option>
+                  <option value="Disparitions inexpliquées">Disparitions inexpliquées</option>
+                  <option value="Histoires vraies insolites">Histoires vraies insolites</option>
+                  <option value="Mystères scientifiques">Mystères scientifiques</option>
+                  <option value="Affaires non résolues">Affaires non résolues</option>
+                  <option value="Légendes et phénomènes étranges">Légendes et phénomènes étranges</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="storyDuration">Durée souhaitée</label>
+                <select id="storyDuration">
+                  <option value="30">30 à 45 secondes</option>
+                  <option value="60">60 à 90 secondes</option>
+                  <option value="90">90 à 120 secondes</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="storyLanguage">Langue du contenu</label>
+                <select id="storyLanguage">
+                  <option value="Français">Français</option>
+                  <option value="Allemand">Allemand</option>
+                  <option value="Portugais">Portugais</option>
+                  <option value="Anglais">Anglais</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="storyNotes">Sujet ou consignes</label>
+                <textarea id="storyNotes" placeholder="Décris l'histoire, les faits à inclure ou l'ambiance recherchée..."></textarea>
+              </div>
+
+              <button class="btn btn-primary" type="submit" style="width:100%">
+                ✦ Préparer le scénario
+              </button>
+
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <h3>Scénario</h3>
+              <span>Étape 2</span>
+            </div>
+
+            <div class="output-box" id="scriptOutput">Ton scénario apparaîtra ici.
+
+Remplis les paramètres à gauche, puis clique sur « Préparer le scénario ».</div>
+
+            <div class="divider"></div>
+
+            <div class="actions">
+              <button class="btn" onclick="copyScript()">Copier le scénario</button>
+              <button class="btn btn-primary" onclick="saveCurrentProject()">Enregistrer le projet</button>
+            </div>
+
+            <p class="helper" style="margin-top:15px">
+              Le scénario doit être vérifié avant publication, notamment pour les faits historiques,
+              les affaires criminelles et les événements réels.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- VIDEO PRODUCTION -->
+      <section class="page" id="page-production">
+
+        <div class="page-heading">
+          <div>
+            <h2>Video Production</h2>
+            <p>Centre de contrôle de la fabrication des vidéos.</p>
+          </div>
+        </div>
 
         <div class="notice">
-          Never place API tokens or passwords in this HTML file.
-          Secret keys must be stored securely on the server.
+          <strong>Connecteurs nécessaires :</strong> le rendu MP4, la génération de voix et les
+          services de visuels ne sont pas encore branchés. Cette page permet de préparer les projets
+          et de suivre leur progression, sans simuler de rendu réel.
         </div>
-      </div>
-    </section>
 
-    <footer>
-      MYSTERY AI STUDIO · Prototype v1.0<br>
-      Stories should be checked against reliable sources before publication.
-      No external AI, rendering or social publishing service is connected yet.
-    </footer>
+        <div class="grid two-columns">
+
+          <div class="card">
+            <div class="card-title">
+              <h3>Étapes de fabrication</h3>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>01 · Script</strong>
+                <p>Préparer et vérifier le scénario.</p>
+              </div>
+              <span class="badge badge-ready">Disponible</span>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>02 · Narration audio</strong>
+                <p>Connecter un moteur de synthèse vocale.</p>
+              </div>
+              <span class="badge badge-progress">À intégrer</span>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>03 · Images et séquences</strong>
+                <p>Obtenir des visuels adaptés à chaque scène.</p>
+              </div>
+              <span class="badge badge-progress">À intégrer</span>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>04 · Montage vertical</strong>
+                <p>Assembler narration, visuels, sous-titres et musique.</p>
+              </div>
+              <span class="badge badge-progress">À intégrer</span>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>05 · Export vidéo</strong>
+                <p>Générer et télécharger un véritable fichier vidéo.</p>
+              </div>
+              <span class="badge badge-progress">À intégrer</span>
+            </div>
+
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <h3>Format de sortie</h3>
+            </div>
+
+            <div class="field">
+              <label>Format vidéo</label>
+              <input value="Vertical 9:16" readonly>
+            </div>
+
+            <div class="field">
+              <label>Résolution cible</label>
+              <input value="1080 × 1920 pixels" readonly>
+            </div>
+
+            <div class="field">
+              <label>Format d'export visé</label>
+              <input value="MP4 / H.264" readonly>
+            </div>
+
+            <div class="field">
+              <label>Sous-titres</label>
+              <input value="Incrustés dans la vidéo" readonly>
+            </div>
+
+            <div class="notice info-notice">
+              Ces paramètres définissent la cible de production. Ils ne signifient pas qu'un fichier
+              MP4 a déjà été généré.
+            </div>
+
+            <button class="btn btn-primary" style="width:100%" onclick="navigate('creator')">
+              Préparer un scénario
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- LIBRARY -->
+      <section class="page" id="page-library">
+
+        <div class="page-heading">
+          <div>
+            <h2>My Library</h2>
+            <p>Retrouve, modifie et organise tes projets enregistrés.</p>
+          </div>
+
+          <button class="btn btn-primary" onclick="openNewProject()">＋ Nouveau projet</button>
+        </div>
+
+        <div class="card">
+          <div class="field">
+            <label for="librarySearch">Rechercher un projet</label>
+            <input id="librarySearch" placeholder="Rechercher par titre ou catégorie...">
+          </div>
+
+          <div class="project-list" id="libraryProjects"></div>
+        </div>
+
+      </section>
+
+      <!-- CALENDAR -->
+      <section class="page" id="page-calendar">
+
+        <div class="page-heading">
+          <div>
+            <h2>Publishing Calendar</h2>
+            <p>Prépare le calendrier éditorial de ton compte TikTok.</p>
+          </div>
+        </div>
+
+        <div class="notice">
+          La planification est enregistrée dans ce navigateur. La publication automatique ne sera
+          possible qu'après connexion et autorisation du compte TikTok via les outils officiels.
+        </div>
+
+        <div class="grid two-columns">
+
+          <div class="card">
+            <div class="card-title">
+              <h3>Programmer un projet</h3>
+            </div>
+
+            <form id="scheduleForm">
+
+              <div class="field">
+                <label for="scheduleProject">Projet</label>
+                <select id="scheduleProject"></select>
+              </div>
+
+              <div class="field">
+                <label for="scheduleDate">Date prévue</label>
+                <input type="date" id="scheduleDate" required>
+              </div>
+
+              <div class="field">
+                <label for="scheduleTime">Heure prévue</label>
+                <input type="time" id="scheduleTime" value="18:00" required>
+              </div>
+
+              <div class="field">
+                <label for="scheduleCaption">Description de la publication</label>
+                <textarea id="scheduleCaption" placeholder="Description, hashtags..."></textarea>
+              </div>
+
+              <button class="btn btn-primary" type="submit">Enregistrer la planification</button>
+
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <h3>Publications prévues</h3>
+            </div>
+
+            <div class="calendar-list" id="calendarList"></div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- AUTOMATION -->
+      <section class="page" id="page-automation">
+
+        <div class="page-heading">
+          <div>
+            <h2>Automation Center</h2>
+            <p>Configure le workflow automatisé de ton studio.</p>
+          </div>
+        </div>
+
+        <div class="notice">
+          Les options ci-dessous enregistrent tes préférences. Elles ne déclenchent pas encore
+          de tâches en arrière-plan : un moteur serveur devra exécuter les automatisations.
+        </div>
+
+        <div class="card">
+
+          <div class="automation-row">
+            <div>
+              <strong>Génération automatique de sujets</strong>
+              <p>Préparer de nouvelles idées de mystères à traiter.</p>
+            </div>
+            <button class="toggle" data-automation="ideas" aria-label="Activer la génération d'idées"></button>
+          </div>
+
+          <div class="automation-row">
+            <div>
+              <strong>Préparation des scripts</strong>
+              <p>Créer des scénarios à partir des sujets sélectionnés.</p>
+            </div>
+            <button class="toggle" data-automation="scripts" aria-label="Activer la préparation des scripts"></button>
+          </div>
+
+          <div class="automation-row">
+            <div>
+              <strong>Production vidéo automatique</strong>
+              <p>Assembler les éléments et préparer un fichier vidéo.</p>
+            </div>
+            <button class="toggle" data-automation="video" aria-label="Activer la production vidéo"></button>
+          </div>
+
+          <div class="automation-row">
+            <div>
+              <strong>Publication programmée</strong>
+              <p>Publier à une date prévue après connexion officielle à TikTok.</p>
+            </div>
+            <button class="toggle" data-automation="publishing" aria-label="Activer la publication programmée"></button>
+          </div>
+
+          <div class="divider"></div>
+
+          <p class="helper">
+            Les interrupteurs servent actuellement à sauvegarder les préférences du studio.
+            Ils ne démarrent pas de processus réels tant que les connecteurs ne sont pas configurés.
+          </p>
+
+          <button class="btn btn-primary" onclick="saveAutomationSettings()">Enregistrer les préférences</button>
+
+        </div>
+
+      </section>
+
+      <!-- ANALYTICS -->
+      <section class="page" id="page-analytics">
+
+        <div class="page-heading">
+          <div>
+            <h2>Analytics</h2>
+            <p>Suivi des indicateurs de production et des performances TikTok.</p>
+          </div>
+        </div>
+
+        <div class="notice">
+          Les statistiques de vues, de likes et de rétention ne sont pas encore récupérées depuis
+          TikTok. Aucun chiffre de performance ne sera inventé.
+        </div>
+
+        <div class="grid stats-grid">
+
+          <div class="card">
+            <div class="stat-label">Projets enregistrés</div>
+            <div class="stat-number" id="analyticsProjects">0</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Scripts disponibles</div>
+            <div class="stat-number" id="analyticsScripts">0</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Vidéos finalisées</div>
+            <div class="stat-number" id="analyticsVideos">0</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Publications confirmées</div>
+            <div class="stat-number" id="analyticsPublished">0</div>
+          </div>
+
+        </div>
+
+        <div class="card section-space">
+          <div class="card-title">
+            <h3>Performances TikTok</h3>
+            <span>Connexion nécessaire</span>
+          </div>
+
+          <div class="empty-state">
+            <div class="empty-icon">📈</div>
+            <strong>Les données TikTok apparaîtront ici.</strong>
+            <p>Il faudra connecter une source de données autorisée pour récupérer les statistiques réelles.</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="page" id="page-settings">
+
+        <div class="page-heading">
+          <div>
+            <h2>Settings</h2>
+            <p>Personnalise ton espace de travail.</p>
+          </div>
+        </div>
+
+        <div class="grid two-columns">
+
+          <div class="card">
+            <div class="card-title">
+              <h3>Préférences générales</h3>
+            </div>
+
+            <form id="settingsForm">
+
+              <div class="field">
+                <label for="workspaceName">Nom du studio</label>
+                <input id="workspaceName" value="Mystery AI Studio">
+              </div>
+
+              <div class="field">
+                <label for="defaultLanguage">Langue par défaut</label>
+                <select id="defaultLanguage">
+                  <option value="Français">Français</option>
+                  <option value="Allemand">Allemand</option>
+                  <option value="Portugais">Portugais</option>
+                  <option value="Anglais">Anglais</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="defaultStyle">Style de narration</label>
+                <select id="defaultStyle">
+                  <option value="Suspense">Suspense</option>
+                  <option value="Documentaire">Documentaire</option>
+                  <option value="Cinématographique">Cinématographique</option>
+                  <option value="Enquête">Enquête</option>
+                </select>
+              </div>
+
+              <button class="btn btn-primary" type="submit">Enregistrer les réglages</button>
+
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <h3>État des connexions</h3>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>Cloudflare</strong>
+                <p>L'interface est servie par ton déploiement existant.</p>
+              </div>
+              <span class="badge badge-ready">Interface</span>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>Service IA</strong>
+                <p>Aucune génération IA externe connectée pour le moment.</p>
+              </div>
+              <span class="badge badge-progress">À connecter</span>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>Service de rendu vidéo</strong>
+                <p>Aucun moteur de montage serveur configuré.</p>
+              </div>
+              <span class="badge badge-progress">À connecter</span>
+            </div>
+
+            <div class="automation-row">
+              <div>
+                <strong>Compte TikTok</strong>
+                <p>Aucune connexion de publication configurée.</p>
+              </div>
+              <span class="badge badge-progress">À connecter</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <div class="footer">
+        MYSTERY AI STUDIO · TikTok Production Workspace<br>
+        Prototype de gestion locale — les intégrations externes doivent être configurées séparément.
+      </div>
+
+    </div>
   </main>
 </div>
 
-<div id="toast" class="toast hidden" role="status"></div>
+<!-- NEW PROJECT MODAL -->
+<div class="modal-backdrop" id="projectModal">
+  <div class="modal">
+
+    <div class="modal-header">
+      <h3>Créer un nouveau projet</h3>
+      <button class="close-btn" onclick="closeModal()" aria-label="Fermer">&times;</button>
+    </div>
+
+    <form id="newProjectForm">
+
+      <div class="field">
+        <label for="newTitle">Titre du projet</label>
+        <input id="newTitle" placeholder="Ex. Le mystère du phare abandonné" required>
+      </div>
+
+      <div class="field">
+        <label for="newCategory">Catégorie</label>
+        <select id="newCategory">
+          <option>Mystères historiques</option>
+          <option>Disparitions inexpliquées</option>
+          <option>Histoires vraies insolites</option>
+          <option>Mystères scientifiques</option>
+          <option>Affaires non résolues</option>
+          <option>Légendes et phénomènes étranges</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="newDuration">Durée</label>
+        <select id="newDuration">
+          <option value="30">30 à 45 secondes</option>
+          <option value="60">60 à 90 secondes</option>
+          <option value="90">90 à 120 secondes</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="newNotes">Notes de production</label>
+        <textarea id="newNotes" placeholder="Sujet, faits, ambiance, détails..."></textarea>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn" onclick="closeModal()">Annuler</button>
+        <button type="submit" class="btn btn-primary">Créer le projet</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-(function () {
-  "use strict";
+"use strict";
 
-  const $ = id => document.getElementById(id);
+/* ---------------------------------------------------
+   STOCKAGE LOCAL
+--------------------------------------------------- */
 
-  const views = [
-    "dashboard",
-    "creator",
-    "library",
-    "automation",
-    "settings"
-  ];
+const STORAGE_KEY = "mysteryStudioProjectsV2";
+const AUTOMATION_KEY = "mysteryStudioAutomationV2";
+const SETTINGS_KEY = "mysteryStudioSettingsV2";
 
-  const titles = {
-    dashboard: ["Dashboard", "Your mystery content command center."],
-    creator: ["Story Creator", "Prepare your next English mystery story."],
-    library: ["My Library", "Your saved story ideas."],
-    automation: ["Automation Center", "Configure your future workflow."],
-    settings: ["Settings", "Manage your workspace preferences."]
-  };
+let projects = loadJSON(STORAGE_KEY, []);
+let currentProjectId = null;
+let currentScript = "";
 
-  let currentOutline = "";
-  let toastTimer;
-
-  function notify(message) {
-    $("toast").textContent = message;
-    $("toast").classList.remove("hidden");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => $("toast").classList.add("hidden"), 3000);
+function loadJSON(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value === null ? fallback : value;
+  } catch (error) {
+    return fallback;
   }
+}
 
-  function go(view) {
-    if (!views.includes(view)) return;
+function saveProjects() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+  renderAll();
+}
 
-    views.forEach(name => {
-      $(name + "View").classList.toggle("hidden", name !== view);
-    });
+function makeId() {
+  return "p_" + Date.now().toString(36) +
+    Math.random().toString(36).slice(2, 8);
+}
 
-    document.querySelectorAll(".nav-btn[data-view]").forEach(button => {
-      button.classList.toggle("active", button.dataset.view === view);
-    });
-
-    $("pageTitle").textContent = titles[view][0];
-    $("pageSubtitle").textContent = titles[view][1];
-
-    if (view === "library") renderLibrary();
-    if (view === "dashboard") renderRecent();
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  document.querySelectorAll("[data-view]").forEach(button => {
-    button.addEventListener("click", () => go(button.dataset.view));
-  });
-
-  document.querySelectorAll("[data-go]").forEach(button => {
-    button.addEventListener("click", () => go(button.dataset.go));
-  });
-
-  function getStories() {
-    try {
-      const data = JSON.parse(localStorage.getItem("mysteryStories") || "[]");
-      return Array.isArray(data) ? data : [];
-    } catch (_) {
-      return [];
-    }
-  }
-
-  function setStories(stories) {
-    localStorage.setItem("mysteryStories", JSON.stringify(stories));
-    updateCounts();
-    renderLibrary();
-    renderRecent();
-  }
-
-  function updateCounts() {
-    const count = getStories().length;
-    $("storyCount").textContent = count;
-    $("libraryCount").textContent = count + (count === 1 ? " story" : " stories");
-  }
-
-  function escapeHTML(value) {
-    return String(value).replace(/[&<>"']/g, char => ({
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, function(char) {
+    return {
       "&": "&amp;",
       "<": "&lt;",
       ">": "&gt;",
       '"': "&quot;",
       "'": "&#39;"
-    })[char]);
+    }[char];
+  });
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "Non définie";
+
+  const date = new Date(dateString);
+
+  if (Number.isNaN(date.getTime())) return "Non définie";
+
+  return date.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+
+  clearTimeout(showToast.timer);
+
+  showToast.timer = setTimeout(function() {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+/* ---------------------------------------------------
+   NAVIGATION
+--------------------------------------------------- */
+
+const pageTitles = {
+  dashboard: ["Dashboard", "Pilote toute ta production TikTok au même endroit."],
+  creator: ["Story Creator", "Prépare tes scénarios."],
+  production: ["Video Production", "Centre de contrôle de la fabrication vidéo."],
+  library: ["My Library", "Organise tous tes projets."],
+  calendar: ["Publishing Calendar", "Prépare ton calendrier éditorial."],
+  automation: ["Automation Center", "Configure ton workflow."],
+  analytics: ["Analytics", "Suis les indicateurs de ton studio."],
+  settings: ["Settings", "Gère les préférences de ton espace."]
+};
+
+function navigate(page) {
+  const target = document.getElementById("page-" + page);
+  if (!target) return;
+
+  document.querySelectorAll(".page").forEach(function(element) {
+    element.classList.remove("active");
+  });
+
+  target.classList.add("active");
+
+  document.querySelectorAll(".nav-btn").forEach(function(button) {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
+
+  document.getElementById("topTitle").textContent = pageTitles[page][0];
+  document.getElementById("topSubtitle").textContent = pageTitles[page][1];
+
+  document.getElementById("sidebar").classList.remove("open");
+
+  if (page === "calendar") renderCalendar();
+  if (page === "library") renderLibrary();
+}
+
+document.querySelectorAll(".nav-btn").forEach(function(button) {
+  button.addEventListener("click", function() {
+    navigate(button.dataset.page);
+  });
+});
+
+document.getElementById("mobileMenu").addEventListener("click", function() {
+  document.getElementById("sidebar").classList.toggle("open");
+});
+
+document.addEventListener("click", function(event) {
+  const sidebar = document.getElementById("sidebar");
+  const menu = document.getElementById("mobileMenu");
+
+  if (
+    window.innerWidth <= 760 &&
+    sidebar.classList.contains("open") &&
+    !sidebar.contains(event.target) &&
+    !menu.contains(event.target)
+  ) {
+    sidebar.classList.remove("open");
+  }
+});
+
+/* ---------------------------------------------------
+   CRÉATION DE PROJETS
+--------------------------------------------------- */
+
+function openNewProject() {
+  document.getElementById("projectModal").classList.add("open");
+  document.getElementById("newTitle").focus();
+}
+
+function closeModal() {
+  document.getElementById("projectModal").classList.remove("open");
+}
+
+document.getElementById("projectModal").addEventListener("click", function(event) {
+  if (event.target === this) closeModal();
+});
+
+document.getElementById("newProjectForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const title = document.getElementById("newTitle").value.trim();
+
+  if (!title) {
+    showToast("Ajoute un titre au projet.");
+    return;
   }
 
-  function makeIdea(category) {
-    const ideas = {
-      "Historical mysteries": [
-        "The Ancient Map That Should Not Exist",
-        "The Lost City Hidden Beneath the Sand",
-        "The Historical Letter Nobody Could Explain"
-      ],
-      "Unexplained disappearances": [
-        "The Expedition That Never Returned",
-        "The Empty Cabin in the Mountains",
-        "The Disappearance That Changed a Village"
-      ],
-      "Strange scientific discoveries": [
-        "The Signal Scientists Could Not Identify",
-        "The Strange Object Found Deep Underground",
-        "The Experiment That Raised Unexpected Questions"
-      ],
-      "Unusual true stories": [
-        "The Ordinary Person Behind an Extraordinary Discovery",
-        "The Message Found Decades Too Late",
-        "The Coincidence That Shocked a Community"
-      ],
-      "Unsolved mysteries": [
-        "The Unsolved Case With One Missing Clue",
-        "The Photograph That Started a Mystery",
-        "The Locked Room With No Clear Explanation"
-      ]
+  const project = {
+    id: makeId(),
+    title: title,
+    category: document.getElementById("newCategory").value,
+    duration: Number(document.getElementById("newDuration").value),
+    notes: document.getElementById("newNotes").value.trim(),
+    language: "Français",
+    script: "",
+    status: "draft",
+    createdAt: new Date().toISOString(),
+    scheduledAt: "",
+    caption: "",
+    publishedAt: ""
+  };
+
+  projects.unshift(project);
+  saveProjects();
+
+  currentProjectId = project.id;
+
+  document.getElementById("storyTitle").value = project.title;
+  document.getElementById("storyCategory").value = project.category;
+  document.getElementById("storyDuration").value = String(project.duration);
+  document.getElementById("storyNotes").value = project.notes;
+
+  document.getElementById("newProjectForm").reset();
+  closeModal();
+  navigate("creator");
+
+  showToast("Projet créé et enregistré.");
+});
+
+/* ---------------------------------------------------
+   GÉNÉRATION LOCALE DE SCÉNARIO
+   Ceci n'est pas encore une connexion à une IA.
+--------------------------------------------------- */
+
+const hooks = [
+  "Imagine découvrir un endroit où quelque chose semble défier toute explication.",
+  "Pendant des années, cette histoire a laissé une question sans réponse.",
+  "Au départ, tout semblait parfaitement normal. Puis un détail a tout changé.",
+  "Certains mystères commencent par un événement minuscule, avant de devenir impossibles à ignorer."
+];
+
+const endings = [
+  "Et toi, quelle explication te semble la plus plausible ?",
+  "Le détail le plus troublant reste pourtant celui-ci : plusieurs questions demeurent ouvertes.",
+  "Alors, hasard, erreur ou véritable énigme ? À toi de te faire ton opinion.",
+  "Si tu veux découvrir d'autres histoires mystérieuses, retrouve les prochaines vidéos du studio."
+];
+
+function chooseRandom(items) {
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+function buildLocalScript(title, category, duration, notes, language) {
+  const hook = chooseRandom(hooks);
+  const ending = chooseRandom(endings);
+
+  const introByLanguage = {
+    "Français": "Dans cette histoire, un détail mérite toute notre attention.",
+    "Allemand": "In dieser Geschichte gibt es ein Detail, das besondere Aufmerksamkeit verdient.",
+    "Portugais": "Nesta história, há um detalhe que merece toda a nossa atenção.",
+    "Anglais": "In this story, one detail deserves our full attention."
+  };
+
+  const outroByLanguage = {
+    "Français": "Avant de tirer une conclusion, il faut distinguer les faits des hypothèses.",
+    "Allemand": "Bevor wir eine Schlussfolgerung ziehen, müssen wir Fakten von Vermutungen unterscheiden.",
+    "Portugais": "Antes de tirar uma conclusão, é importante distinguir os factos das hipóteses.",
+    "Anglais": "Before reaching a conclusion, we must separate facts from speculation."
+  };
+
+  const targetWords = duration <= 30 ? "environ 75 à 100 mots" :
+    duration <= 60 ? "environ 140 à 190 mots" :
+    "environ 210 à 270 mots";
+
+  const extra = notes
+    ? "\n\nÉléments demandés par le créateur :\n" + notes
+    : "\n\nConsigne de recherche : sélectionner un cas adapté à la catégorie et vérifier les faits avant toute publication.";
+
+  return [
+    "TITRE : " + title,
+    "CATÉGORIE : " + category,
+    "LANGUE : " + language,
+    "DURÉE CIBLE : " + (duration <= 30 ? "30–45 secondes" : duration <= 60 ? "60–90 secondes" : "90–120 secondes"),
+    "",
+    "1. ACCROCHE",
+    hook,
+    "",
+    "2. INTRODUCTION",
+    introByLanguage[language] || introByLanguage["Français"],
+    "Présente le lieu, l'époque ou le contexte en une ou deux phrases.",
+    "",
+    "3. DÉVELOPPEMENT",
+    "Raconte les faits dans un ordre simple et captivant. Présente les détails les plus importants progressivement. Utilise des phrases courtes, faciles à comprendre à l'oral.",
+    extra,
+    "",
+    "4. MOMENT CLÉ",
+    "Mets en avant le détail le plus surprenant ou la question qui reste sans réponse. Ne présente pas une hypothèse comme un fait établi.",
+    "",
+    "5. CONCLUSION",
+    outroByLanguage[language] || outroByLanguage["Français"],
+    ending,
+    "",
+    "6. NOTES DE PRODUCTION",
+    "• Format : vertical 9:16.",
+    "• Sous-titres : phrases courtes, lisibles sur téléphone.",
+    "• Visuels : prévoir un visuel pertinent pour chaque passage.",
+    "• Narration : ton mystérieux, rythme naturel, pauses après les révélations.",
+    "• Vérification : rechercher des sources fiables avant de présenter cette histoire comme vraie.",
+    "",
+    "IMPORTANT : ce document est une structure de scénario générée localement, pas un récit factuel vérifié. Il faut compléter les faits et vérifier les sources avant publication.",
+    "",
+    "LONGUEUR INDICATIVE : " + targetWords
+  ].join("\n");
+}
+
+document.getElementById("creatorForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const title = document.getElementById("storyTitle").value.trim();
+
+  if (!title) {
+    showToast("Ajoute un titre avant de préparer le scénario.");
+    return;
+  }
+
+  const category = document.getElementById("storyCategory").value;
+  const duration = Number(document.getElementById("storyDuration").value);
+  const notes = document.getElementById("storyNotes").value.trim();
+  const language = document.getElementById("storyLanguage").value;
+
+  currentScript = buildLocalScript(title, category, duration, notes, language);
+
+  document.getElementById("scriptOutput").textContent = currentScript;
+
+  const existing = projects.find(function(project) {
+    return project.id === currentProjectId;
+  });
+
+  if (existing) {
+    existing.title = title;
+    existing.category = category;
+    existing.duration = duration;
+    existing.notes = notes;
+    existing.language = language;
+    existing.script = currentScript;
+    existing.status = "script";
+    saveProjects();
+  } else {
+    currentProjectId = null;
+  }
+
+  showToast("Structure de scénario préparée. Vérifie les faits avant publication.");
+});
+
+/* ---------------------------------------------------
+   ENREGISTREMENT DU PROJET COURANT
+--------------------------------------------------- */
+
+function saveCurrentProject() {
+  const title = document.getElementById("storyTitle").value.trim();
+  const script = document.getElementById("scriptOutput").textContent.trim();
+
+  if (!title) {
+    showToast("Ajoute un titre au projet.");
+    return;
+  }
+
+  if (!script || script.startsWith("Ton scénario apparaîtra ici")) {
+    showToast("Prépare d'abord un scénario.");
+    return;
+  }
+
+  let project = projects.find(function(item) {
+    return item.id === currentProjectId;
+  });
+
+  if (!project) {
+    project = {
+      id: makeId(),
+      createdAt: new Date().toISOString(),
+      status: "script",
+      scheduledAt: "",
+      caption: "",
+      publishedAt: ""
     };
 
-    const list = ideas[category] || ideas["Unsolved mysteries"];
-    return list[Math.floor(Math.random() * list.length)];
+    projects.unshift(project);
+    currentProjectId = project.id;
   }
 
-  $("quickGenerate").addEventListener("click", () => {
-    const category = $("quickCategory").value;
-    const idea = makeIdea(category);
+  project.title = title;
+  project.category = document.getElementById("storyCategory").value;
+  project.duration = Number(document.getElementById("storyDuration").value);
+  project.language = document.getElementById("storyLanguage").value;
+  project.notes = document.getElementById("storyNotes").value.trim();
+  project.script = script;
 
-    $("quickResult").textContent =
-      "TITLE: " + idea + "\n\n" +
-      "CATEGORY: " + category + "\n\n" +
-      "HOOK: Imagine discovering a clue that changes everything you thought you knew.\n\n" +
-      "STORY PLAN:\n" +
-      "1. Introduce the mystery and its setting.\n" +
-      "2. Present the known facts and the key clue.\n" +
-      "3. Explain the strongest evidence and competing explanations.\n" +
-      "4. End with an unanswered question.\n\n" +
-      "IMPORTANT: This is a fictional content idea, not a verified real event. Research the topic before presenting it as true.";
+  if (project.status === "draft") project.status = "script";
 
-    notify("Story idea created.");
+  saveProjects();
+  showToast("Projet et scénario enregistrés.");
+}
+
+async function copyScript() {
+  const script = document.getElementById("scriptOutput").textContent.trim();
+
+  if (!script || script.startsWith("Ton scénario apparaîtra ici")) {
+    showToast("Aucun scénario à copier.");
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(script);
+    showToast("Scénario copié.");
+  } catch (error) {
+    const area = document.createElement("textarea");
+    area.value = script;
+    document.body.appendChild(area);
+    area.select();
+
+    try {
+      document.execCommand("copy");
+      showToast("Scénario copié.");
+    } catch (copyError) {
+      showToast("Copie automatique impossible sur cet appareil.");
+    }
+
+    area.remove();
+  }
+}
+
+/* ---------------------------------------------------
+   PROJETS ET STATUTS
+--------------------------------------------------- */
+
+const statusNames = {
+  draft: "Brouillon",
+  script: "Script prêt",
+  production: "En production",
+  ready: "Vidéo finalisée",
+  published: "Publiée"
+};
+
+const statusClasses = {
+  draft: "badge-draft",
+  script: "badge-ready",
+  production: "badge-progress",
+  ready: "badge-ready",
+  published: "badge-published"
+};
+
+function statusBadge(status) {
+  const safeStatus = statusNames[status] ? status : "draft";
+
+  return '<span class="badge ' + statusClasses[safeStatus] + '">' +
+    statusNames[safeStatus] + '</span>';
+}
+
+function projectItem(project) {
+  return `
+    <div class="project-item">
+      <div class="project-cover">🔎</div>
+
+      <div class="project-info">
+        <h4>${escapeHTML(project.title)}</h4>
+        <p>${escapeHTML(project.category)} · ${formatDate(project.createdAt)}</p>
+        <div style="margin-top:7px">${statusBadge(project.status)}</div>
+      </div>
+
+      <div class="project-item-actions">
+        <button class="btn btn-small" onclick="editProject('${project.id}')">Ouvrir</button>
+        <button class="btn btn-small" onclick="changeProjectStatus('${project.id}')">Statut</button>
+        <button class="btn btn-small btn-danger" onclick="deleteProject('${project.id}')">Supprimer</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderRecentProjects() {
+  const container = document.getElementById("recentProjects");
+  const recent = projects.slice(0, 5);
+
+  if (!recent.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        Aucun projet pour le moment.<br>
+        Crée ton premier projet pour commencer.
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = recent.map(projectItem).join("");
+}
+
+function renderLibrary() {
+  const container = document.getElementById("libraryProjects");
+  const query = document.getElementById("librarySearch").value.toLowerCase().trim();
+
+  const filtered = projects.filter(function(project) {
+    return (
+      project.title.toLowerCase().includes(query) ||
+      project.category.toLowerCase().includes(query)
+    );
   });
 
-  $("createStory").addEventListener("click", () => {
-    const title = $("storyTitle").value.trim();
-    const category = $("storyCategory").value;
-    const duration = $("storyDuration").value;
-    const notes = $("storyNotes").value.trim();
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        Aucun projet correspondant.
+      </div>
+    `;
+    return;
+  }
 
-    if (!title) {
-      notify("Please enter a working title first.");
-      $("storyTitle").focus();
+  container.innerHTML = filtered.map(projectItem).join("");
+}
+
+document.getElementById("librarySearch").addEventListener("input", renderLibrary);
+
+function editProject(id) {
+  const project = projects.find(function(item) {
+    return item.id === id;
+  });
+
+  if (!project) return;
+
+  currentProjectId = project.id;
+  currentScript = project.script || "";
+
+  document.getElementById("storyTitle").value = project.title;
+  document.getElementById("storyCategory").value = project.category;
+  document.getElementById("storyDuration").value = String(project.duration || 30);
+  document.getElementById("storyLanguage").value = project.language || "Français";
+  document.getElementById("storyNotes").value = project.notes || "";
+  document.getElementById("scriptOutput").textContent =
+    project.script || "Aucun scénario enregistré pour ce projet.";
+
+  navigate("creator");
+}
+
+function changeProjectStatus(id) {
+  const project = projects.find(function(item) {
+    return item.id === id;
+  });
+
+  if (!project) return;
+
+  const order = ["draft", "script", "production", "ready", "published"];
+  const current = order.indexOf(project.status);
+  const next = order[(current + 1) % order.length];
+
+  if (next === "published") {
+    const confirmed = confirm(
+      "Confirmer que cette vidéo a réellement été publiée sur TikTok ?"
+    );
+
+    if (!confirmed) {
+      project.status = "ready";
+      saveProjects();
       return;
     }
 
-    currentOutline =
-      "TITLE: " + title + "\n" +
-      "CATEGORY: " + category + "\n" +
-      "TARGET DURATION: " + duration + "\n\n" +
-      "OPENING HOOK (0–5 seconds)\n" +
-      "Start with a surprising question or a verified, compelling fact.\n\n" +
-      "CONTEXT\n" +
-      "Introduce the people, place and time. Give viewers only the details they need.\n\n" +
-      "MAIN STORY\n" +
-      "Present the key events in chronological order. Separate documented facts from theories.\n\n" +
-      "KEY CLUE\n" +
-      "Explain the strongest available evidence and why it matters.\n\n" +
-      "ENDING\n" +
-      "Summarize what is known, what remains uncertain, and invite viewers to discuss the evidence.\n\n" +
-      "VISUAL PLAN\n" +
-      "Scene 1: Atmospheric establishing shot.\n" +
-      "Scene 2: Location or historical context.\n" +
-      "Scene 3: Evidence, documents or relevant imagery.\n" +
-      "Scene 4: Main discovery or competing explanations.\n" +
-      "Scene 5: Closing question and title card.\n\n" +
-      "SOURCE NOTES\n" +
-      (notes || "No sources supplied. Research and verify before publication.") +
-      "\n\nDISCLAIMER\n" +
-      "This is a planning outline, not a finished researched script. Do not invent facts or present an unverified story as true.";
+    project.publishedAt = new Date().toISOString();
+  }
 
-    $("storyResult").textContent = currentOutline;
-    notify("Story outline prepared.");
+  project.status = next;
+
+  saveProjects();
+
+  showToast("Statut mis à jour : " + statusNames[next]);
+}
+
+function deleteProject(id) {
+  const project = projects.find(function(item) {
+    return item.id === id;
   });
 
-  $("saveStory").addEventListener("click", () => {
-    if (!currentOutline) {
-      notify("Create an outline first.");
-      return;
-    }
+  if (!project) return;
 
-    const stories = getStories();
+  if (!confirm('Supprimer le projet "' + project.title + '" ?')) return;
 
-    stories.unshift({
-      id: Date.now(),
-      title: $("storyTitle").value.trim(),
-      category: $("storyCategory").value,
-      duration: $("storyDuration").value,
-      outline: currentOutline,
-      createdAt: new Date().toISOString()
+  projects = projects.filter(function(item) {
+    return item.id !== id;
+  });
+
+  if (currentProjectId === id) {
+    currentProjectId = null;
+    currentScript = "";
+  }
+
+  saveProjects();
+  showToast("Projet supprimé.");
+}
+
+/* ---------------------------------------------------
+   CALENDRIER ÉDITORIAL
+--------------------------------------------------- */
+
+function renderCalendar() {
+  const select = document.getElementById("scheduleProject");
+  const previousValue = select.value;
+
+  select.innerHTML = projects.length
+    ? projects.map(function(project) {
+        return '<option value="' + escapeHTML(project.id) + '">' +
+          escapeHTML(project.title) + '</option>';
+      }).join("")
+    : '<option value="">Crée d’abord un projet</option>';
+
+  if (projects.some(function(project) { return project.id === previousValue; })) {
+    select.value = previousValue;
+  }
+
+  const scheduled = projects
+    .filter(function(project) {
+      return Boolean(project.scheduledAt);
+    })
+    .sort(function(a, b) {
+      return a.scheduledAt.localeCompare(b.scheduledAt);
     });
 
-    try {
-      setStories(stories);
-      notify("Story saved to your browser.");
-    } catch (_) {
-      notify("Storage is full. Copy your outline before clearing old stories.");
-    }
-  });
+  const list = document.getElementById("calendarList");
 
-  $("copyStory").addEventListener("click", async () => {
-    if (!currentOutline) {
-      notify("Create an outline first.");
-      return;
-    }
+  if (!scheduled.length) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">📅</div>
+        Aucune publication planifiée.<br>
+        Sélectionne un projet et une date.
+      </div>
+    `;
+    return;
+  }
 
-    try {
-      await navigator.clipboard.writeText(currentOutline);
-      notify("Outline copied.");
-    } catch (_) {
-      const area = document.createElement("textarea");
-      area.value = currentOutline;
-      document.body.appendChild(area);
-      area.select();
-      const success = document.execCommand("copy");
-      area.remove();
-      notify(success ? "Outline copied." : "Please select and copy the outline manually.");
-    }
-  });
-
-  function storyCard(story) {
-    const card = document.createElement("article");
-    card.className = "video-card";
-
-    const thumb = document.createElement("div");
-    thumb.className = "video-thumb";
-    thumb.textContent = "🌒";
-
-    const status = document.createElement("div");
-    status.className = "status";
-    status.textContent = "STORY OUTLINE";
-
-    const heading = document.createElement("h4");
-    heading.textContent = story.title || "Untitled story";
-
-    const description = document.createElement("p");
-    description.textContent = story.category + " · " + story.duration;
-
-    const open = document.createElement("button");
-    open.className = "button";
-    open.textContent = "Open outline";
-    open.addEventListener("click", () => {
-      currentOutline = story.outline;
-      $("storyTitle").value = story.title;
-      $("storyCategory").value = story.category;
-      $("storyDuration").value = story.duration;
-      $("storyResult").textContent = story.outline;
-      go("creator");
+  list.innerHTML = scheduled.map(function(project) {
+    const date = new Date(project.scheduledAt);
+    const dateLabel = date.toLocaleDateString("fr-FR", {
+      day: "2-digit",
+      month: "short"
+    });
+    const timeLabel = date.toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit"
     });
 
-    card.append(thumb, status, heading, description, open);
-    return card;
-  }
+    return `
+      <div class="calendar-item">
+        <div class="calendar-date">${escapeHTML(dateLabel)}</div>
+        <div class="calendar-info">
+          <strong>${escapeHTML(project.title)}</strong>
+          <span>${escapeHTML(timeLabel)} · Planification locale, non publiée automatiquement</span>
+          ${project.caption ? '<p class="helper">' + escapeHTML(project.caption) + '</p>' : ""}
+        </div>
+        <button class="btn btn-small btn-danger" onclick="removeSchedule('${project.id}')">Retirer</button>
+      </div>
+    `;
+  }).join("");
+}
 
-  function renderLibrary() {
-    const stories = getStories();
-    const list = $("libraryList");
-    list.replaceChildren();
+document.getElementById("scheduleForm").addEventListener("submit", function(event) {
+  event.preventDefault();
 
-    if (!stories.length) {
-      const empty = document.createElement("div");
-      empty.className = "empty";
-      empty.textContent = "No saved stories yet. Create your first story outline to get started.";
-      list.appendChild(empty);
-      return;
-    }
+  const id = document.getElementById("scheduleProject").value;
+  const date = document.getElementById("scheduleDate").value;
+  const time = document.getElementById("scheduleTime").value;
+  const caption = document.getElementById("scheduleCaption").value.trim();
 
-    stories.forEach(story => list.appendChild(storyCard(story)));
-  }
-
-  function renderRecent() {
-    const stories = getStories().slice(0, 3);
-    const list = $("recentList");
-    list.replaceChildren();
-
-    if (!stories.length) {
-      const empty = document.createElement("div");
-      empty.className = "empty";
-      empty.textContent = "Your saved stories will appear here.";
-      list.appendChild(empty);
-      return;
-    }
-
-    stories.forEach(story => list.appendChild(storyCard(story)));
-  }
-
-  $("saveAutomation").addEventListener("click", () => {
-    const settings = {
-      dailyTarget: $("dailyTarget").value,
-      platform: $("publishPlatform").value,
-      publishMode: $("autoPublish").value
-    };
-
-    localStorage.setItem("mysteryAutomationPreferences", JSON.stringify(settings));
-
-    $("automationResult").textContent =
-      "Preferences saved locally.\n\n" +
-      "Target: " + settings.dailyTarget + " story/stories per day\n" +
-      "Platform: " + settings.platform + "\n" +
-      "Publishing: " +
-      (settings.publishMode === "review"
-        ? "Review before publishing"
-        : "Automatic publishing requested") +
-      "\n\nBackground automation is not active. Backend services and authorized platform integrations must be configured first.";
-
-    notify("Preferences saved.");
+  const project = projects.find(function(item) {
+    return item.id === id;
   });
 
-  $("saveSettings").addEventListener("click", () => {
-    const settings = {
-      name: $("creatorName").value.trim() || "Mystery AI Studio",
-      language: $("contentLanguage").value,
-      style: $("contentStyle").value
-    };
-
-    localStorage.setItem("mysteryWorkspaceSettings", JSON.stringify(settings));
-    notify("Workspace preferences saved.");
-  });
-
-  function loadPreferences() {
-    try {
-      const settings = JSON.parse(localStorage.getItem("mysteryAutomationPreferences") || "null");
-
-      if (settings) {
-        $("dailyTarget").value = settings.dailyTarget || "1";
-        $("publishPlatform").value = settings.platform || "YouTube Shorts";
-        $("autoPublish").value = settings.publishMode || "review";
-      }
-    } catch (_) {}
-
-    try {
-      const settings = JSON.parse(localStorage.getItem("mysteryWorkspaceSettings") || "null");
-
-      if (settings) {
-        $("creatorName").value = settings.name || "Mystery AI Studio";
-        $("contentLanguage").value = settings.language || "English";
-        $("contentStyle").value = settings.style || "Cinematic documentary";
-      }
-    } catch (_) {}
+  if (!project) {
+    showToast("Crée d'abord un projet.");
+    return;
   }
 
-  loadPreferences();
-  updateCounts();
+  if (!date || !time) {
+    showToast("Choisis une date et une heure.");
+    return;
+  }
+
+  const scheduledDate = new Date(date + "T" + time);
+
+  if (Number.isNaN(scheduledDate.getTime())) {
+    showToast("Date ou heure invalide.");
+    return;
+  }
+
+  project.scheduledAt = scheduledDate.toISOString();
+  project.caption = caption;
+
+  saveProjects();
+  renderCalendar();
+
+  showToast("Planification enregistrée dans le studio.");
+});
+
+function removeSchedule(id) {
+  const project = projects.find(function(item) {
+    return item.id === id;
+  });
+
+  if (!project) return;
+
+  project.scheduledAt = "";
+  project.caption = "";
+
+  saveProjects();
+  renderCalendar();
+
+  showToast("Planification retirée.");
+}
+
+/* ---------------------------------------------------
+   AUTOMATISATION : PRÉFÉRENCES LOCALES
+--------------------------------------------------- */
+
+const defaultAutomation = {
+  ideas: false,
+  scripts: false,
+  video: false,
+  publishing: false
+};
+
+function loadAutomationSettings() {
+  const settings = Object.assign(
+    {},
+    defaultAutomation,
+    loadJSON(AUTOMATION_KEY, {})
+  );
+
+  document.querySelectorAll("[data-automation]").forEach(function(button) {
+    const key = button.dataset.automation;
+    button.classList.toggle("on", Boolean(settings[key]));
+    button.setAttribute("aria-pressed", String(Boolean(settings[key])));
+  });
+}
+
+document.querySelectorAll("[data-automation]").forEach(function(button) {
+  button.addEventListener("click", function() {
+    button.classList.toggle("on");
+
+    button.setAttribute(
+      "aria-pressed",
+      String(button.classList.contains("on"))
+    );
+  });
+});
+
+function saveAutomationSettings() {
+  const settings = {};
+
+  document.querySelectorAll("[data-automation]").forEach(function(button) {
+    settings[button.dataset.automation] = button.classList.contains("on");
+  });
+
+  localStorage.setItem(AUTOMATION_KEY, JSON.stringify(settings));
+
+  showToast("Préférences enregistrées. Les moteurs doivent encore être connectés.");
+}
+
+/* ---------------------------------------------------
+   RÉGLAGES
+--------------------------------------------------- */
+
+function loadSettings() {
+  const settings = loadJSON(SETTINGS_KEY, {});
+
+  if (settings.workspaceName) {
+    document.getElementById("workspaceName").value = settings.workspaceName;
+  }
+
+  if (settings.defaultLanguage) {
+    document.getElementById("defaultLanguage").value = settings.defaultLanguage;
+  }
+
+  if (settings.defaultStyle) {
+    document.getElementById("defaultStyle").value = settings.defaultStyle;
+  }
+
+  if (settings.workspaceName) {
+    document.querySelector(".brand h1").textContent = settings.workspaceName;
+  }
+}
+
+document.getElementById("settingsForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const settings = {
+    workspaceName: document.getElementById("workspaceName").value.trim() || "Mystery AI Studio",
+    defaultLanguage: document.getElementById("defaultLanguage").value,
+    defaultStyle: document.getElementById("defaultStyle").value
+  };
+
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+
+  document.querySelector(".brand h1").textContent = settings.workspaceName;
+
+  showToast("Réglages enregistrés.");
+});
+
+/* ---------------------------------------------------
+   STATISTIQUES
+--------------------------------------------------- */
+
+function renderStats() {
+  const total = projects.length;
+  const scripts = projects.filter(function(project) {
+    return Boolean(project.script);
+  }).length;
+
+  const videos = projects.filter(function(project) {
+    return project.status === "ready" || project.status === "published";
+  }).length;
+
+  const published = projects.filter(function(project) {
+    return project.status === "published";
+  }).length;
+
+  document.getElementById("statProjects").textContent = total;
+  document.getElementById("statScripts").textContent = scripts;
+  document.getElementById("statVideos").textContent = videos;
+  document.getElementById("statPublished").textContent = published;
+
+  document.getElementById("analyticsProjects").textContent = total;
+  document.getElementById("analyticsScripts").textContent = scripts;
+  document.getElementById("analyticsVideos").textContent = videos;
+  document.getElementById("analyticsPublished").textContent = published;
+}
+
+function renderAll() {
+  renderStats();
+  renderRecentProjects();
   renderLibrary();
-  renderRecent();
-})();
+  renderCalendar();
+}
+
+/* ---------------------------------------------------
+   INITIALISATION
+--------------------------------------------------- */
+
+document.getElementById("currentDate").textContent =
+  new Date().toLocaleDateString("fr-FR", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
+
+loadSettings();
+loadAutomationSettings();
+renderAll();
+
 </script>
+
 </body>
 </html>
